@@ -1,0 +1,61 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Users/dejon/Documents/BUas/Y1/block A/assignment/tmpl8/assets/BombermanTiles.tsx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "BombermanTiles.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 3
+        },
+        "C:/Users/dejon/Documents/BUas/Y1/block A/assignment/tmpl8/assets/BombermanTiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/dejon/Documents/BUas/Y1/block A/assignment/tmpl8/assets/bombermanMap.tmx": {
+            "scale": 1.7448588709677417,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 465.9402622912936,
+                "y": 91.98451672540298
+            }
+        },
+        "bombermanMap.tmx": {
+            "scale": 1.7448588709677417,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 248.1576058697787,
+                "y": 87.97273094921718
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/dejon/Documents/BUas/Y1/block A/assignment/tmpl8/assets",
+    "map.fixedSize": true,
+    "map.height": 11,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 31,
+    "openFiles": [
+        "BombermanTiles.tsx",
+        "bombermanMap.tmx",
+        "C:/Users/dejon/Documents/BUas/Y1/block A/assignment/tmpl8/assets/bombermanMap.tmx",
+        "C:/Users/dejon/Documents/BUas/Y1/block A/assignment/tmpl8/assets/BombermanTiles.tsx"
+    ],
+    "project": "bombermanMap.tiled-project",
+    "recentFiles": [
+        "C:/Users/dejon/Documents/BUas/Y1/block A/assignment/tmpl8/assets/BombermanTiles.tsx",
+        "C:/Users/dejon/Documents/BUas/Y1/block A/assignment/tmpl8/assets/bombermanMap.tmx",
+        "BombermanTiles.tsx",
+        "bombermanMap.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
