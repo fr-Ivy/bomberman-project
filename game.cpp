@@ -4,18 +4,21 @@
 
 #include "precomp.h"
 #include "game.h"
+#include "map.h"
 
-// -----------------------------------------------------------
-// Initialize the application
-// -----------------------------------------------------------
+
+Surface* TileSheet = nullptr;
+map Map;
+
 void Game::Init()
 {
-	// anything that happens only once at application start goes here
+
+    TileSheet = new Surface("assets/tiled/bomberman_spritesheet.png");
 }
 
-// -----------------------------------------------------------
-// Main application tick function - Executed once per frame
-// -----------------------------------------------------------
+
 void Game::Tick( float /* deltaTime */ )
 {
+	screen->Clear(0x000000);
+	Map.RenderMap(screen, TileSheet);
 }
