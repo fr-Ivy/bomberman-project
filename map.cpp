@@ -23,8 +23,8 @@ void map::RenderMap(Surface* screen, Surface* TileSheet)
 	{
 		for (int x = 0; x < MAP_COLUMNS; x++)
 		{
-			int ID = tiles[y][x]; //gets the ID
-			int currentColumn = ID % (224 / TILE_SIZE) - 1;
+			int ID = tiles[y][x] - 1; //gets the ID
+			int currentColumn = ID % (224 / TILE_SIZE);
 			int currentRow = ID / (224 / TILE_SIZE);
 
 
