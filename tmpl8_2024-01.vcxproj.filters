@@ -23,7 +23,9 @@
     <ClCompile Include="template\scene.cpp">
       <Filter>template</Filter>
     </ClCompile>
-    <ClCompile Include="map.cpp" />
+    <ClCompile Include="map.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -54,7 +56,9 @@
     <ClInclude Include="template\scene.h">
       <Filter>template</Filter>
     </ClInclude>
-    <ClInclude Include="map.h" />
+    <ClInclude Include="map.h">
+      <Filter>map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -73,6 +77,9 @@
     </Filter>
     <Filter Include="kernels">
       <UniqueIdentifier>{96ad1716-f468-46c6-8f16-5accbc19d76c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="map">
+      <UniqueIdentifier>{066f379f-67da-489b-9198-6e83eb2402a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

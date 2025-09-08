@@ -13,7 +13,7 @@ map Map;
 void Game::Init()
 {
 
-    TileSheet = new Surface("assets/tiled/bomberman_spritesheet.png");
+    TileSheet = new Surface("assets/tiled/TileSet.png");
 }
 
 
