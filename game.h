@@ -19,8 +19,8 @@ public:
 	void MouseDown( int ) { /* implement if you want to detect mouse button presses */ }
 	void MouseMove( int x, int y ) { mousePos.x = x, mousePos.y = y; }
 	void MouseWheel( float ) { /* implement if you want to handle the mouse wheel */ }
-	void KeyUp( int ) { /* implement if you want to handle keys */ }
-	void KeyDown( int ) { /* implement if you want to handle keys */ }
+	void KeyUp(int);
+	void KeyDown(int);
 	// data members
 	int2 mousePos;
 };

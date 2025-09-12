@@ -4,21 +4,29 @@
 
 #include "precomp.h"
 #include "game.h"
-#include "map.h"
+#include "Map.h"
+#include "Player.h"
 
 
-Surface* TileSheet = nullptr;
-map Map;
+Surface* TileSheet = nullptr;;
+Map map;
+Player player;
+
+Sprite playerSprite(new Surface("assets/player/playerSprites.png"), 19);
 
 void Game::Init()
 {
-
     TileSheet = new Surface("assets/tiled/TileSet.png");
+	player = Player(&playerSprite, screen);
 }
 
 
-void Game::Tick( float /* deltaTime */ )
+void Game::Tick( float deltaTime )
 {
 	screen->Clear(0x000000);
-	Map.RenderMap(screen, TileSheet);
+	map.RenderMap(screen, TileSheet);
+	player.move(deltaTime, map);
+	player.Draw();
+	//map.CheckCollision();
+	player.Pixel();
 }
