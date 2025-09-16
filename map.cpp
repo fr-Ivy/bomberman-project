@@ -1,7 +1,7 @@
 #include "precomp.h"
 #include "Map.h"
-#include "Player.h"
 #include <iostream>
+
 
 Map::Map()
 {
@@ -50,7 +50,7 @@ void Map::RenderMap(Surface* screen, Surface* TileSheet)
 	{
 		for (int x = 0; x < MAP_COLUMNS; x++)
 		{
-			int tileX = TILE_SIZE * x; //start point at 0
+			int tileX = TILE_SIZE * x - cameraX; //start point at 0
 			int tileY = TILE_SIZE * y; //start point at 0
 			if (tileX + TILE_SIZE >= 0 && tileY + TILE_SIZE >= 0 && tileX <= SCRWIDTH && tileY <= SCRHEIGHT) //is the tile currently in-screen
 			{
@@ -72,7 +72,6 @@ void Map::RenderMap(Surface* screen, Surface* TileSheet)
 				currentColumn += minOffScreen.x;
 				currentRow += minOffScreen.y;
 
-
 				uint* dst = screen->pixels + tileX + tileY * SCRWIDTH;
 				uint* src = TileSheet->pixels + currentColumn + currentRow * MAP_WIDTH;
 
@@ -91,19 +90,45 @@ void Map::RenderMap(Surface* screen, Surface* TileSheet)
 	}
 }
 
+void Map::camera(int x)
+{
+	cameraX = x - TILE_SIZE;
+}
 
 bool Map::CheckCollision(int tx, int ty) const
 {
-	int x = tx / TILE_SIZE;
+	int x = (tx + cameraX) / TILE_SIZE;
 	int y = ty / TILE_SIZE;
 
-	
-	if (x < 0 || x >= MAP_COLUMNS || y < 0 || y >= MAP_ROWS)
-		return false;
+	//if (x < 0 || x >= MAP_COLUMNS || y < 0 || y >= MAP_ROWS)
+		//return false;
 
 	const int ID = tiles[y][x];
 	//cout << ID << endl;
 	return ID == 46;
-
 }
 
+bool Map::checkPixelCollision(int pixel, int SPRITE_SIZE, int tx, int ty) const
+{
+	int wall = false;
+
+	int currentPixelColumn = pixel % SPRITE_SIZE;
+	int currentPixelRow = pixel / SPRITE_SIZE;
+
+	//cout << currentPixelColumn << endl;
+
+	int x = (currentPixelColumn + tx + cameraX) / TILE_SIZE;
+	int y = (currentPixelRow + ty) / TILE_SIZE;
+
+	const int ID = tiles[y][x];
+	//cout << ID << endl;
+	if (ID == 46)
+	{
+		wall = true;
+	}
+	else
+	{
+		wall = false;
+	}
+	return true;
+}

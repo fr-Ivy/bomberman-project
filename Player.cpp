@@ -61,10 +61,10 @@ void Game::KeyDown(int key)
 	}
 }
 
-void Player::move(float deltaTime, const Map& map)
+void Player::move(float deltaTime)
 {
 	deltaTime /= 1000.0f;
-	float speed = 200.0f;
+	float speed = 100.0f;
 	s_frame -= deltaTime;
 
 	tx = x;
@@ -72,7 +72,7 @@ void Player::move(float deltaTime, const Map& map)
 
 	if (W)
 	{
-		ty -= speed * deltaTime;
+		ty -= speed * deltaTime * 2;
 		//y -= speed * deltaTime;
 
 
@@ -96,7 +96,7 @@ void Player::move(float deltaTime, const Map& map)
 	}
 	if (S)
 	{
-		ty += speed * deltaTime;
+		ty += speed * deltaTime * 2;
 		//y += speed * deltaTime;
 
 
@@ -121,39 +121,81 @@ void Player::move(float deltaTime, const Map& map)
 
 	if (tx > x)
 	{
-		if (!map.CheckCollision(tx + SPRITE_SIZE - 1, y) &&
-			!map.CheckCollision(tx + SPRITE_SIZE - 1, y + SPRITE_SIZE - 1))
+		if (!map->CheckCollision(tx + SPRITE_SIZE - 1, y) &&
+			!map->CheckCollision(tx + SPRITE_SIZE - 1, y + SPRITE_SIZE - 1))
 		{
-
-			x = tx;
+			for (int i = 0; i < SPRITE_SIZE; i++)
+			{
+				if (pixelVisible[i])
+				{
+					if (!map->checkPixelCollision(i, SPRITE_SIZE, tx, y) ||
+						!map->checkPixelCollision(i, SPRITE_SIZE, tx, y + SPRITE_SIZE - 1))
+					{
+						x = tx;
+					}
+				}
+			}
 		}
 	}
 
 	else if (tx < x)
 	{
-		if (!map.CheckCollision(tx, y) &&
-			!map.CheckCollision(tx, y + SPRITE_SIZE - 1))
+		if (!map->CheckCollision(tx, y) &&
+			!map->CheckCollision(tx, y + SPRITE_SIZE - 1))
 		{
-			x = tx;
+			for (int i = 0; i < SPRITE_SIZE; i++)
+			{
+				if (pixelVisible[i])
+				{
+					if (!map->checkPixelCollision(i, SPRITE_SIZE, tx, y) ||
+						!map->checkPixelCollision(i, SPRITE_SIZE, tx, y + SPRITE_SIZE - 1))
+					{
+						x = tx;
+					}
+				}
+			}
 		}
 	}
 
 	if (ty > y)
 	{
-		if (!map.CheckCollision(x, ty + SPRITE_SIZE - 1) &&
-			!map.CheckCollision(x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1))
+		if (!map->CheckCollision(x, ty + SPRITE_SIZE - 1) &&
+			!map->CheckCollision(x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1))
 		{
-			y = ty;
+			for (int i = 0; i < SPRITE_SIZE; i++)
+			{
+				if (pixelVisible[i])
+				{
+					if (!map->checkPixelCollision(i, SPRITE_SIZE, x, ty + SPRITE_SIZE - 1) ||
+						!map->checkPixelCollision(i, SPRITE_SIZE, x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1))
+					{
+						y = ty;
+					}
+				}
+			}
 		}
 	}
 	else if (ty < y)
 	{
-		if (!map.CheckCollision(x, ty) &&
-			!map.CheckCollision(x + SPRITE_SIZE - 1, ty))
+		if (!map->CheckCollision(x, ty) &&
+			!map->CheckCollision(x + SPRITE_SIZE - 1, ty))
 		{
-			y = ty;
+			for (int i = 0; i < SPRITE_SIZE; i++)
+			{
+				if (pixelVisible[i])
+				{
+					if (!map->checkPixelCollision(i, SPRITE_SIZE, x, ty) ||
+						!map->checkPixelCollision(i, SPRITE_SIZE, x + SPRITE_SIZE - 1, ty))
+					{
+						y = ty;
+					}
+				}
+			}
 		}
 	}
+
+	map->camera(x);
+	cout << x << ", " << y << endl;
 }
 
 
@@ -183,7 +225,6 @@ void Player::Pixel()
 		{
 			pixelVisible[i] = false;
 		}
-
-		cout << pixelVisible[i] << endl;
+		//cout << i << pixelVisible[i] << endl;
 	}
 }

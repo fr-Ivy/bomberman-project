@@ -8,25 +8,22 @@
 #include "Player.h"
 
 
-Surface* TileSheet = nullptr;;
-Map map;
-Player player;
-
-Sprite playerSprite(new Surface("assets/player/playerSprites.png"), 19);
-
 void Game::Init()
 {
     TileSheet = new Surface("assets/tiled/TileSet.png");
-	player = Player(&playerSprite, screen);
+	playerSprite = new Sprite (new Surface("assets/player/playerSprites.png"), 19);
+	player = new Player(playerSprite, screen);
+	map = new Map(); //On the heap memory
+	player->SetMapPtr(map);
 }
 
 
 void Game::Tick( float deltaTime )
 {
 	screen->Clear(0x000000);
-	map.RenderMap(screen, TileSheet);
-	player.move(deltaTime, map);
-	player.Draw();
+	map->RenderMap(screen, TileSheet);
+	player->move(deltaTime);
+	player->Draw();
 	//map.CheckCollision();
-	player.Pixel();
+	player->Pixel();
 }

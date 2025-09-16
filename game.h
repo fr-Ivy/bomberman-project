@@ -4,6 +4,9 @@
 
 #pragma once
 
+class Player; //Forward declaration
+class Map;
+
 namespace Tmpl8
 {
 
@@ -23,6 +26,12 @@ public:
 	void KeyDown(int);
 	// data members
 	int2 mousePos;
+
+	Surface* TileSheet = nullptr;
+	Map* map;
+	Player* player;
+
+	Sprite* playerSprite;
 };
 
 } // namespace Tmpl8

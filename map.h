@@ -6,6 +6,8 @@ public:
     Map();
     void RenderMap(Surface* screen, Surface* TileSheet);
     bool CheckCollision(int tx, int ty) const;
+    bool checkPixelCollision(int pixel, int SPRITE_SIZE, int tx, int ty) const;
+    void camera(int x);
 
     static constexpr int TILE_SIZE = 64;
 
@@ -13,6 +15,7 @@ private:
     static constexpr int MAP_ROWS = 11;
     static constexpr int MAP_COLUMNS = 31;
     static constexpr int MAP_WIDTH = 896;
+    int cameraX = 0;
     int tiles[MAP_ROWS][MAP_COLUMNS];
 };
 
