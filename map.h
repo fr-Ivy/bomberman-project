@@ -1,13 +1,17 @@
 #pragma once
 
+class bomb;
+
 class Map
 {
 public:
     Map();
     void RenderMap(Surface* screen, Surface* TileSheet);
     bool CheckCollision(int tx, int ty) const;
-    bool checkPixelCollision(int pixel, int SPRITE_SIZE, int tx, int ty) const;
+    bool checkPixelCollision(const bool* playerPixelVisible, int tx, int ty, int SPRITE_SIZE) const;
     void camera(int x);
+
+    int getCamera() { return cameraX; }
 
     static constexpr int TILE_SIZE = 64;
 

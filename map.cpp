@@ -108,27 +108,68 @@ bool Map::CheckCollision(int tx, int ty) const
 	return ID == 46;
 }
 
-bool Map::checkPixelCollision(int pixel, int SPRITE_SIZE, int tx, int ty) const
+bool Map::checkPixelCollision(const bool* playerPixelVisible, int tx, int ty, int SPRITE_SIZE) const
 {
-	int wall = false;
+	bool tilePixelVisible[TILE_SIZE * TILE_SIZE];
+	for (int i = 0; i < TILE_SIZE * TILE_SIZE; i++) {
+		tilePixelVisible[i] = true;
+	}
 
-	int currentPixelColumn = pixel % SPRITE_SIZE;
-	int currentPixelRow = pixel / SPRITE_SIZE;
-
-	//cout << currentPixelColumn << endl;
-
-	int x = (currentPixelColumn + tx + cameraX) / TILE_SIZE;
-	int y = (currentPixelRow + ty) / TILE_SIZE;
+	int x = (tx) / TILE_SIZE;
+	int y = ty / TILE_SIZE;
 
 	const int ID = tiles[y][x];
+
+	int playerLeft, playerRight, playerTop, playerBottom;
+	int tileLeft, tileRight, tileTop, tileBottom;
+	int left, right, top, bottom;
+	int columns, rows;
+
+	playerLeft = tx;
+	playerRight = tx + SPRITE_SIZE - 1;
+	playerTop = ty;
+	playerBottom = ty + SPRITE_SIZE - 1;
+
+	tileLeft = x * TILE_SIZE;
+	tileRight = x * TILE_SIZE + TILE_SIZE - 1;
+	tileTop = y * TILE_SIZE;
+	tileBottom = y * TILE_SIZE + TILE_SIZE - 1;
+
+
+	left = max(playerLeft, tileLeft);
+	right = min(playerRight, tileRight);
+	top = max(playerTop, tileTop);
+	bottom = min(playerBottom, tileBottom);
+	columns = right - left + 1;
+	rows = bottom - top + 1;
+
+	playerLeft = left - playerLeft;
+	playerTop = top - playerTop;
+
+	tileLeft = left - tileLeft;
+	tileTop = top - tileTop;
+
+	cout << "tx, ty: " << tx << ", " << ty << endl;
+	cout << "tile x, y: " << x << ", " << y << endl;
+	cout << "player offsets: " << playerLeft << ", " << playerTop << endl;
+	cout << "columns, rows: " << columns << ", " << rows << endl;
+	cout << "ID: " << ID << endl;
+
+
 	//cout << ID << endl;
 	if (ID == 46)
 	{
-		wall = true;
+		for (int i = 0; i < rows; i++)
+		{
+			for (int j = 0; j < columns; j++)
+			{
+				if (playerPixelVisible[(playerLeft + j) + (playerTop + i) * SPRITE_SIZE] &&
+					tilePixelVisible[(tileLeft + j) + (tileTop + i) * TILE_SIZE])
+				{
+					return true;
+				}
+			}
+		}
 	}
-	else
-	{
-		wall = false;
-	}
-	return true;
+	return false;
 }

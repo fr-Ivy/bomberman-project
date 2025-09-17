@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "game.h"
 #include "Map.h"
+#include "Bomb.h"
 #include <iostream>
 
 Player::Player(Sprite* sprite, Surface* screen)
@@ -10,12 +11,7 @@ Player::Player(Sprite* sprite, Surface* screen)
 	this->screen = screen;
 }
 
-bool W = false;
-bool A = false;
-bool S = false;
-bool D = false;
-
-void Game::KeyUp(int key)
+void Player::KeyUp(int key)
 {
 	switch (key)
 	{
@@ -35,10 +31,13 @@ void Game::KeyUp(int key)
 	case GLFW_KEY_D:
 		D = false;
 		break;
+	case GLFW_KEY_E:
+		E = false;
+		break;
 	}
 }
 
-void Game::KeyDown(int key)
+void Player::KeyDown(int key)
 {
 	switch (key)
 	{
@@ -57,6 +56,9 @@ void Game::KeyDown(int key)
 	case GLFW_KEY_RIGHT:
 	case GLFW_KEY_D:
 		D = true;
+		break;
+	case GLFW_KEY_E:
+		E = true;
 		break;
 	}
 }
@@ -79,6 +81,7 @@ void Player::move(float deltaTime)
 		if (s_frame <= 0.0f)
 		{
 			frame = (frame + 1) % 3 + 9;
+			Pixel();
 			s_frame = s_frameCooldown;
 		}
 	}
@@ -91,6 +94,7 @@ void Player::move(float deltaTime)
 		if (s_frame <= 0.0f)
 		{
 			frame = (frame + 1) % 3;
+			Pixel();
 			s_frame = s_frameCooldown;
 		}
 	}
@@ -103,6 +107,7 @@ void Player::move(float deltaTime)
 		if (s_frame <= 0.0f)
 		{
 			frame = (frame + 1) % 3 + 3;
+			Pixel();
 			s_frame = s_frameCooldown;
 		}
 	}
@@ -115,45 +120,29 @@ void Player::move(float deltaTime)
 		if (s_frame <= 0.0f)
 		{
 			frame = (frame + 1) % 3 + 6;
+			Pixel();
 			s_frame = s_frameCooldown;
 		}
 	}
+
+
 
 	if (tx > x)
 	{
 		if (!map->CheckCollision(tx + SPRITE_SIZE - 1, y) &&
 			!map->CheckCollision(tx + SPRITE_SIZE - 1, y + SPRITE_SIZE - 1))
 		{
-			for (int i = 0; i < SPRITE_SIZE; i++)
-			{
-				if (pixelVisible[i])
-				{
-					if (!map->checkPixelCollision(i, SPRITE_SIZE, tx, y) ||
-						!map->checkPixelCollision(i, SPRITE_SIZE, tx, y + SPRITE_SIZE - 1))
-					{
-						x = tx;
-					}
-				}
-			}
+			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
+				x = tx;
 		}
 	}
-
 	else if (tx < x)
 	{
 		if (!map->CheckCollision(tx, y) &&
 			!map->CheckCollision(tx, y + SPRITE_SIZE - 1))
 		{
-			for (int i = 0; i < SPRITE_SIZE; i++)
-			{
-				if (pixelVisible[i])
-				{
-					if (!map->checkPixelCollision(i, SPRITE_SIZE, tx, y) ||
-						!map->checkPixelCollision(i, SPRITE_SIZE, tx, y + SPRITE_SIZE - 1))
-					{
-						x = tx;
-					}
-				}
-			}
+			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
+				x = tx;
 		}
 	}
 
@@ -162,17 +151,8 @@ void Player::move(float deltaTime)
 		if (!map->CheckCollision(x, ty + SPRITE_SIZE - 1) &&
 			!map->CheckCollision(x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1))
 		{
-			for (int i = 0; i < SPRITE_SIZE; i++)
-			{
-				if (pixelVisible[i])
-				{
-					if (!map->checkPixelCollision(i, SPRITE_SIZE, x, ty + SPRITE_SIZE - 1) ||
-						!map->checkPixelCollision(i, SPRITE_SIZE, x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1))
-					{
-						y = ty;
-					}
-				}
-			}
+			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
+				y = ty;
 		}
 	}
 	else if (ty < y)
@@ -180,22 +160,14 @@ void Player::move(float deltaTime)
 		if (!map->CheckCollision(x, ty) &&
 			!map->CheckCollision(x + SPRITE_SIZE - 1, ty))
 		{
-			for (int i = 0; i < SPRITE_SIZE; i++)
-			{
-				if (pixelVisible[i])
-				{
-					if (!map->checkPixelCollision(i, SPRITE_SIZE, x, ty) ||
-						!map->checkPixelCollision(i, SPRITE_SIZE, x + SPRITE_SIZE - 1, ty))
-					{
-						y = ty;
-					}
-				}
-			}
+			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
+				y = ty;
 		}
 	}
 
 	map->camera(x);
-	cout << x << ", " << y << endl;
+	//bomb->getPosition(x, y);
+	//cout << x << ", " << y << endl;
 }
 
 
@@ -213,18 +185,26 @@ void Player::Pixel()
 {
 	uint* pixels = sprite->GetBuffer();
 
-	for (int i = 0; i < SPRITE_SIZE; i++)
+	for (int y = 0; y < SPRITE_SIZE; y++)
 	{
-		uint32_t pixel = pixels[i];
-
-		if (pixel != 0)
+		for (int x = 0; x < SPRITE_SIZE; x++)
 		{
-			pixelVisible[i] = true;
+			uint32_t pixel = pixels[x + y * SPRITE_SIZE];
+			pixelVisible[x + y * SPRITE_SIZE] = (pixel != 0);
+			//cout << SPRITE_SIZE << ", " << sprite->GetBuffer() << endl;
+			//cout << pixels[x + y * SPRITE_SIZE] << endl;
 		}
-		else
-		{
-			pixelVisible[i] = false;
-		}
-		//cout << i << pixelVisible[i] << endl;
 	}
 }
+
+float2 Player::getPos()
+{
+	float2 tmp = { x, y };
+	return tmp;
+}
+
+bool Player::Get_E()
+{
+	return E;
+}
+

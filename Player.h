@@ -1,6 +1,8 @@
 #pragma once
 #include "Map.h"
 
+class Bomb;
+
 class Player
 {
 public:
@@ -8,10 +10,17 @@ public:
 	Player(Sprite* sprite, Surface* screen);
 	~Player() = default;
 	void move(float deltaTime);
+
+	void KeyDown(int key);
+	void KeyUp(int key);
+
+
 	void Draw();
 	void Pixel();
 	void SetMapPtr(Map* _map) { map = _map; }
-
+	void SetBombPtr(Bomb* _bomb) { bomb = _bomb; }
+	float2 getPos();
+	bool Get_E();
 	float getX() const { return tx; }
 	float getY() const { return ty; }
 
@@ -20,17 +29,24 @@ private:
 	Sprite* sprite = nullptr;
 
 	Map* map = nullptr;
+	Bomb* bomb = nullptr;
 
 	int frame = 4;
 	float x = 64;
 	float y = 64;
 	float tx = 64;
 	float ty = 64;
+
+	bool W = false;
+	bool A = false;
+	bool S = false;
+	bool D = false;
+	bool E = false;
+
 	static constexpr int SPRITE_SIZE = 64;
 	float s_frame = 0.2f;
 	float s_frameCooldown = 0.2f;
-	int WidthHeight = static_cast<int>(sqrt(SPRITE_SIZE));
 
-	bool pixelVisible[SPRITE_SIZE] = { false };
+	bool pixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
 };
 

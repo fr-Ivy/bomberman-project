@@ -6,6 +6,7 @@
 
 class Player; //Forward declaration
 class Map;
+class Bomb;
 
 namespace Tmpl8
 {
@@ -22,16 +23,20 @@ public:
 	void MouseDown( int ) { /* implement if you want to detect mouse button presses */ }
 	void MouseMove( int x, int y ) { mousePos.x = x, mousePos.y = y; }
 	void MouseWheel( float ) { /* implement if you want to handle the mouse wheel */ }
-	void KeyUp(int);
-	void KeyDown(int);
+	void KeyUp(int key);
+	void KeyDown(int key);
 	// data members
 	int2 mousePos;
 
 	Surface* TileSheet = nullptr;
 	Map* map;
 	Player* player;
+	Bomb* bomb;
 
 	Sprite* playerSprite;
+	Sprite* bombSprite;
+	Sprite* explosionSprite;
+
 };
 
 } // namespace Tmpl8
