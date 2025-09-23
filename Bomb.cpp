@@ -1,6 +1,7 @@
 #include "precomp.h"
 #include "Bomb.h"
 #include "Player.h"
+#include "Brick.h"
 #include <iostream>
 
 Bomb::Bomb(Surface* screen, Player* player, Map* map) 
@@ -74,17 +75,28 @@ void Bomb::Draw(float deltaTime)
 			for (int j = 0; j < 4; j++) //drawing to every direction
 			{
 				float position = 64.0f;
-				for (int i = 0; i < range; i++) // change position
+				for (int i = 0; i < range; i++) // change range
 				{
 					int positionX = position * directions[j].x;
 					int positionY = position * directions[j].y;
 
+					int explosionX = positionX + playerPos.x;
+					int explosionY = positionY + playerPos.y;
 
+					bool collision = false;
+					for (int b = 0; b < brickCount; b++)
+					{
+						if (Collision(explosionX, explosionY, brick[b]->getX(), brick[b]->getY(), BRICK_SIZE))
+						{
+							collision = true;
+							break;
+						}
+					}
 
-					//x = playerPos.x + positionX - cameraX;
-					//y = playerPos.y + positionY;
-
-					if (collision) { break; }
+					if (collision)
+					{
+						break;
+					}
 
 					if (i == range - 1)
 					{
@@ -109,35 +121,10 @@ void Bomb::Draw(float deltaTime)
 	}
 }
 
-bool Bomb::Collision(int tx, int ty, int otherSPRITE_SIZE)
+bool Bomb::Collision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE)
 {
-	if (exploded)
-	{
-		int2 directions[4] = { {-1, 0}, {0, -1}, {1, 0}, {0, 1} };
-
-		float position = 64.0f;
-
-		for (int i = 0; i < range; i++) // change position
-		{
-			for (int j = 0; j < 4; j++) //drawing to every direction
-			{
-				int positionX = position * directions[j].x;
-				int positionY = position * directions[j].y;
-
-				x = playerPos.x + positionX;
-				y = playerPos.y + positionY;
-				//cout << "Checking explosion at (" << x << "," << y
-					//<< ") vs brick (" << tx << "," << ty << ")" << endl;
-				if (x < tx + otherSPRITE_SIZE && y < ty + otherSPRITE_SIZE &&
-					x + SPRITE_SIZE > tx && y + SPRITE_SIZE > ty)
-				{
-					collision = true;
-					return true;
-				}
-			}
-			position += 64.0f;
-		}
-	}
-	collision = false;
-	return false;
+	//cout << "Checking explosion at (" << x << "," << y
+	//<< ") vs brick (" << tx << "," << ty << ")" << endl;
+	return (explosionX < tx + otherSPRITE_SIZE && explosionY < ty + otherSPRITE_SIZE &&
+		explosionX + SPRITE_SIZE > tx && explosionY + SPRITE_SIZE > ty);
 }

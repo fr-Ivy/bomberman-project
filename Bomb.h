@@ -2,6 +2,7 @@
 
 class Player;
 class Map;
+class Brick;
 
 class Bomb
 {
@@ -10,8 +11,13 @@ public:
 	~Bomb();
 	//getters and setters should be class defined. I cannot get someone else's organs for example
 	void Draw(float deltaTime);
-	bool Collision(int tx, int ty, int otherSPRITE_SIZE);
+	bool Collision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE);
 	
+	void SetBrickPtr(Brick** _brick, int count) {
+		brick = _brick;
+		brickCount = count;
+	}
+
 private:
 	Surface* screen = nullptr;
 	Sprite* bombSprite = nullptr;
@@ -29,15 +35,18 @@ private:
 	bool e_pressed = false;
 	bool startCountdown = false;
 	bool exploded = false;
-	bool collision = false;
 
 	float bombCountdown = 3.0f;
 	float explosionCountdown = 1.0f;
 	float frameCountdown = 0.4f;
 
+	int brickCount = 0;
+
 	static constexpr float SPRITE_SIZE = 64.0f;
+	static constexpr float BRICK_SIZE = 64.0f;
 
 	Player* player = nullptr;
 	Map* map = nullptr;
+	Brick** brick = nullptr;
 };
 

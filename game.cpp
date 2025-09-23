@@ -19,10 +19,11 @@ void Game::Init()
 	{
 		bricks[i] = new Brick(screen, bomb, map);
 		bricks[i]->choosePos();
-	}
 
+	}
 	player->SetMapPtr(map);
 	player->SetBrickPtr(bricks, amountBricks);
+	bomb->SetBrickPtr(bricks, amountBricks);
 
 	srand(static_cast<unsigned int>(time(0)));
 }
@@ -40,7 +41,6 @@ void Game::Tick( float deltaTime )
 
 	for (int i = 0; i < amountBricks; i++)
 	{
-		bricks[i]->checkBomb();
 		bricks[i]->Draw();
 	}
 }

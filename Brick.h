@@ -10,8 +10,10 @@ public:
 	~Brick();
 	void choosePos();
 	bool checkCollision(int tx, int ty, int SPRITE_SIZE);
-	void checkBomb();
 	void Draw();
+
+	int getX() const { return x; }
+	int getY() const { return y; }
 
 
 private:
@@ -26,6 +28,8 @@ private:
 	int cameraX = 0;
 
 	int BRICK_SIZE = 64;
+
+	bool collision = false;
 
 	Bomb* bomb = nullptr;
 	Map* map = nullptr;

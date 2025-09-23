@@ -36,14 +36,6 @@ bool Brick::checkCollision(int tx, int ty, int SPRITE_SIZE)
 		x - cameraX + BRICK_SIZE > tx && y + BRICK_SIZE > ty);
 }
 
-void Brick::checkBomb()
-{
-	if (bomb->Collision(x, y, BRICK_SIZE))
-	{
-		cout << "hit" << endl;
-	}
-}
-
 
 void Brick::Draw()
 {

@@ -52,7 +52,7 @@ private:
 	float s_frame = 0.2f;
 	float s_frameCooldown = 0.2f;
 
-	int brickCount;
+	int brickCount = 0;
 
 	bool pixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
 };
