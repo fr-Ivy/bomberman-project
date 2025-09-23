@@ -2,13 +2,13 @@
 #include "Map.h"
 
 class Bomb;
+class Brick;
 
 class Player
 {
 public:
-	Player() = default;
-	Player(Sprite* sprite, Surface* screen);
-	~Player() = default;
+	Player(Surface* screen);
+	~Player();
 	void move(float deltaTime);
 
 	void KeyDown(int key);
@@ -19,17 +19,22 @@ public:
 	void Pixel();
 	void SetMapPtr(Map* _map) { map = _map; }
 	void SetBombPtr(Bomb* _bomb) { bomb = _bomb; }
-	float2 getPos();
+	void SetBrickPtr(Brick** _brick, int count) {
+		brick = _brick;
+		brickCount = count;
+	}
+	int2 getPos();
 	bool Get_E();
 	float getX() const { return tx; }
 	float getY() const { return ty; }
 
 private:
 	Surface* screen = nullptr;
-	Sprite* sprite = nullptr;
+	Sprite* playerSprite = nullptr;
 
 	Map* map = nullptr;
 	Bomb* bomb = nullptr;
+	Brick** brick = nullptr;
 
 	int frame = 4;
 	float x = 64;
@@ -46,6 +51,8 @@ private:
 	static constexpr int SPRITE_SIZE = 64;
 	float s_frame = 0.2f;
 	float s_frameCooldown = 0.2f;
+
+	int brickCount;
 
 	bool pixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
 };

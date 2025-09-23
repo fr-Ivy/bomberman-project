@@ -3,12 +3,18 @@
 #include "game.h"
 #include "Map.h"
 #include "Bomb.h"
+#include "Brick.h"
 #include <iostream>
 
-Player::Player(Sprite* sprite, Surface* screen)
+Player::Player(Surface* screen)
 {
-	this->sprite = sprite;
+	playerSprite = new Sprite(new Surface("assets/player/playerSprites.png"), 19);
 	this->screen = screen;
+}
+
+Player::~Player()
+{
+	delete playerSprite;
 }
 
 void Player::KeyUp(int key)
@@ -125,12 +131,19 @@ void Player::move(float deltaTime)
 		}
 	}
 
-
+	bool brickCollision = false;
+	for (int i = 0; i < brickCount; i++) {
+		if (brick[i]->checkCollision(tx, ty, SPRITE_SIZE)) {
+			brickCollision = true;
+			break;
+		}
+	}
 
 	if (tx > x)
 	{
 		if (!map->CheckCollision(tx + SPRITE_SIZE - 1, y) &&
-			!map->CheckCollision(tx + SPRITE_SIZE - 1, y + SPRITE_SIZE - 1))
+			!map->CheckCollision(tx + SPRITE_SIZE - 1, y + SPRITE_SIZE - 1) &&
+			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
 				x = tx;
@@ -139,7 +152,8 @@ void Player::move(float deltaTime)
 	else if (tx < x)
 	{
 		if (!map->CheckCollision(tx, y) &&
-			!map->CheckCollision(tx, y + SPRITE_SIZE - 1))
+			!map->CheckCollision(tx, y + SPRITE_SIZE - 1) &&
+			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
 				x = tx;
@@ -149,7 +163,8 @@ void Player::move(float deltaTime)
 	if (ty > y)
 	{
 		if (!map->CheckCollision(x, ty + SPRITE_SIZE - 1) &&
-			!map->CheckCollision(x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1))
+			!map->CheckCollision(x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1) &&
+			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
 				y = ty;
@@ -158,7 +173,8 @@ void Player::move(float deltaTime)
 	else if (ty < y)
 	{
 		if (!map->CheckCollision(x, ty) &&
-			!map->CheckCollision(x + SPRITE_SIZE - 1, ty))
+			!map->CheckCollision(x + SPRITE_SIZE - 1, ty) &&
+			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
 				y = ty;
@@ -173,17 +189,17 @@ void Player::move(float deltaTime)
 
 void Player::Draw()
 {
-	if (sprite)
+	if (playerSprite)
 	{
-		sprite->Draw(screen, x, y);
-		sprite->SetFrame(frame);
+		playerSprite->Draw(screen, x, y);
+		playerSprite->SetFrame(frame);
 	}
 }
 
 
 void Player::Pixel()
 {
-	uint* pixels = sprite->GetBuffer();
+	uint* pixels = playerSprite->GetBuffer();
 
 	for (int y = 0; y < SPRITE_SIZE; y++)
 	{
@@ -197,9 +213,9 @@ void Player::Pixel()
 	}
 }
 
-float2 Player::getPos()
+int2 Player::getPos()
 {
-	float2 tmp = { x, y };
+	int2 tmp = { static_cast<int>(x), static_cast<int>(y) };
 	return tmp;
 }
 

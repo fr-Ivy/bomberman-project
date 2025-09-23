@@ -5,6 +5,8 @@
 
 Map::Map()
 {
+	tileSheet = new Surface("assets/tiled/TileSet.png");
+
 	const char layout[MAP_ROWS][MAP_COLUMNS] =
 	{
 		{46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46},
@@ -27,6 +29,11 @@ Map::Map()
 	}
 }
 
+Map::~Map()
+{
+	delete tileSheet;
+}
+
 
 /*const char tiles[11][11] =
 {
@@ -44,7 +51,7 @@ Map::Map()
 };
 */
 
-void Map::RenderMap(Surface* screen, Surface* TileSheet)
+void Map::RenderMap(Surface* screen)
 {
 	for (int y = 0; y < MAP_ROWS; y++)
 	{
@@ -73,7 +80,7 @@ void Map::RenderMap(Surface* screen, Surface* TileSheet)
 				currentRow += minOffScreen.y;
 
 				uint* dst = screen->pixels + tileX + tileY * SCRWIDTH;
-				uint* src = TileSheet->pixels + currentColumn + currentRow * MAP_WIDTH;
+				uint* src = tileSheet->pixels + currentColumn + currentRow * MAP_WIDTH;
 
 				const uint width = TILE_SIZE - minOffScreen.x - maxOffScreen.x;
 				const uint height = TILE_SIZE - minOffScreen.y - maxOffScreen.y;

@@ -6,7 +6,8 @@ class Map
 {
 public:
     Map();
-    void RenderMap(Surface* screen, Surface* TileSheet);
+    ~Map();
+    void RenderMap(Surface* screen);
     bool CheckCollision(int tx, int ty) const;
     bool checkPixelCollision(const bool* playerPixelVisible, int tx, int ty, int SPRITE_SIZE) const;
     void camera(int x);
@@ -16,6 +17,8 @@ public:
     static constexpr int TILE_SIZE = 64;
 
 private:
+    Surface* tileSheet = nullptr;
+
     static constexpr int MAP_ROWS = 11;
     static constexpr int MAP_COLUMNS = 31;
     static constexpr int MAP_WIDTH = 896;

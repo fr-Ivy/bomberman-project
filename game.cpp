@@ -7,30 +7,42 @@
 #include "Map.h"
 #include "Player.h"
 #include "Bomb.h"
-
+#include "Brick.h"
 
 void Game::Init()
 {
-    TileSheet = new Surface("assets/tiled/TileSet.png");
-	playerSprite = new Sprite (new Surface("assets/player/playerSprites.png"), 19);
-	bombSprite = new Sprite(new Surface("assets/bomb.png"), 3);
-	explosionSprite = new Sprite(new Surface("assets/explosion.png"), 36);
-
-	player = new Player(playerSprite, screen);
+	player = new Player(screen);
 	map = new Map(); //On the heap memory
-	bomb = new Bomb(bombSprite, explosionSprite, screen, player, map);
+	bomb = new Bomb(screen, player, map);
+
+	for (int i = 0; i < amountBricks; i++)
+	{
+		bricks[i] = new Brick(screen, bomb, map);
+		bricks[i]->choosePos();
+	}
+
 	player->SetMapPtr(map);
+	player->SetBrickPtr(bricks, amountBricks);
+
+	srand(static_cast<unsigned int>(time(0)));
 }
 
 
 void Game::Tick( float deltaTime )
 {
 	screen->Clear(0x000000);
-	map->RenderMap(screen, TileSheet);
+	map->RenderMap(screen);
 	player->move(deltaTime);
 	player->Draw();
 	//map.CheckCollision();
 	bomb->Draw(deltaTime);
+
+
+	for (int i = 0; i < amountBricks; i++)
+	{
+		bricks[i]->checkBomb();
+		bricks[i]->Draw();
+	}
 }
 
 void Game::KeyUp(int key)

@@ -32,6 +32,9 @@
     <ClCompile Include="Bomb.cpp">
       <Filter>Bomb</Filter>
     </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Bricks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -71,6 +74,9 @@
     <ClInclude Include="Bomb.h">
       <Filter>Bomb</Filter>
     </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Bricks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -98,6 +104,9 @@
     </Filter>
     <Filter Include="Bomb">
       <UniqueIdentifier>{d6857cde-166d-49cc-8b9e-9bb0ee5ef0a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bricks">
+      <UniqueIdentifier>{99394c25-6867-45fa-94d4-00612604faec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

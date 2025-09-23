@@ -7,6 +7,7 @@
 class Player; //Forward declaration
 class Map;
 class Bomb;
+class Brick;
 
 namespace Tmpl8
 {
@@ -28,15 +29,12 @@ public:
 	// data members
 	int2 mousePos;
 
-	Surface* TileSheet = nullptr;
 	Map* map;
 	Player* player;
 	Bomb* bomb;
 
-	Sprite* playerSprite;
-	Sprite* bombSprite;
-	Sprite* explosionSprite;
-
+	static constexpr int amountBricks = 20; //80
+	Brick* bricks[amountBricks];	
 };
 
 } // namespace Tmpl8
