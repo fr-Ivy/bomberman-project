@@ -16,23 +16,24 @@ void Game::Init()
 	map = new Map(); //On the heap memory
 	bomb = new Bomb(screen, player, map);
 
-	for (int i = 0; i < amountBricks; i++)
+	for (int i = 0; i < levels * amountBricks; i++)
 	{
 		bricks[i] = new Brick(screen, bomb, map);
 		bricks[i]->choosePos();
 	}
 
 	player->SetMapPtr(map);
-	player->SetBrickPtr(bricks, amountBricks);
-	bomb->SetBrickPtr(bricks, amountBricks);
+	player->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
+	bomb->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
 	bomb->SetGamePtr(this);
+	player->SetGamePtr(this);
 
 	srand(static_cast<unsigned int>(time(0)));
 }
 
 void Game::deleteBrick(int index)
 {
-	if (index < 0 || index >= amountBricks) return;
+	if (index < 0 || index >= amountBricks * levels) return;
 	if (!bricks[index]) return;
 
 	std::cout << "Before delete: bricks[" << index << "] = " << bricks[index] << "\n";
@@ -42,9 +43,20 @@ void Game::deleteBrick(int index)
 
 }
 
+void Game::Level0()
+{
+	for (int i = amountBricks * currentLevel; i < amountBricks * currentLevel + amountBricks; i++)
+	{
+		if (bricks[i])
+		{
+			bricks[i]->Draw();
+		}
+	}
+}
+
 void Game::Level1()
 {
-	for (int i = 0; i < amountBricks; i++)
+	for (int i = amountBricks * currentLevel; i < amountBricks * currentLevel + amountBricks; i++)
 	{
 		if (bricks[i])
 		{
@@ -63,7 +75,12 @@ void Game::Tick( float deltaTime )
 	player->Draw();
 	bomb->Draw(deltaTime);
 
-	Level1();
+	switch (currentLevel)
+	{
+	case 0: Level0(); break;
+	case 1: Level1(); break;
+	}
+
 }
 
 void Game::KeyUp(int key)

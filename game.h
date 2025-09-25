@@ -28,6 +28,7 @@ public:
 	void KeyDown(int key);
 
 	void deleteBrick(int index);
+	void Level0();
 	void Level1();
 	// data members
 	int2 mousePos;
@@ -38,10 +39,10 @@ public:
 
 
 
-	static constexpr int amountBricks = 80; //80
-	Brick* bricks[amountBricks];
-
-	Surface* brickSurface = nullptr;
+	static constexpr int amountBricks = 20; //80
+	static constexpr int levels = 2;
+	int currentLevel = 1;
+	Brick* bricks[amountBricks * levels];
 };
 
 } // namespace Tmpl8

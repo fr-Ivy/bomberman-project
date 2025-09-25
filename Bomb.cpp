@@ -103,7 +103,7 @@ void Bomb::Draw(float deltaTime)
 					int explosionX = positionX + playerPos.x;
 					int	explosionY = positionY + playerPos.y;
 					bool collision = false;
-					for (int b = 0; b < brickCount; b++)
+					for (int b = game->currentLevel * brickCount; b < brickCount * game->currentLevel + brickCount; b++)
 					{
 						if (brick[b] && Collision(explosionX, explosionY, brick[b]->getX(), brick[b]->getY(), BRICK_SIZE))
 						{
@@ -209,6 +209,8 @@ bool Bomb::PlayerExplosionCollision(int explosionX, int explosionY, int tx, int 
 	int bottom = min(playerBottom, explosionBottom);
 	int columns = right - left;
 	int rows = bottom - top;
+	//std::cout << "columns=" << columns << ", rows=" << rows << std::endl;
+
 	if (columns <= 0 || rows <= 0) return false;
 
 	playerLeft = left - playerLeft;
@@ -226,7 +228,7 @@ bool Bomb::PlayerExplosionCollision(int explosionX, int explosionY, int tx, int 
 				ExplosionPixelVisible[(explosionLeft + x) + (explosionTop + y) * SPRITE_SIZE])
 			{
 				//cout << "hit" << endl;
-				screen->Plot(left + x, top + y, 0x008022);
+				screen->Plot(left + x, top + y, 0x002880);
 				hit = true;
 			}
 		}

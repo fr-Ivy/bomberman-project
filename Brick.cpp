@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include "game.h"
 
 Brick::Brick(Surface* screen, Bomb* bomb, Map* map)
 	: bomb(bomb), map(map)
@@ -69,6 +70,7 @@ void Brick::Draw()
 {
 	if (brickSprite)
 	{
+		cameraX = map->getCamera();
 		brickSprite->Draw(screen, x - cameraX, y);
 	}
 }

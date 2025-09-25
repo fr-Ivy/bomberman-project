@@ -15,14 +15,15 @@ public:
 	//getters and setters should be class defined. I cannot get someone else's organs for example
 	void Draw(float deltaTime);
 	bool Collision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE);
-	void getExplosionMask(int frameNumber);
+	void getExplosionMask(int frameNumberZ);
 	bool PlayerExplosionCollision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE);
 
 	void SetGamePtr(Game* _game) { game = _game; }
 
-	void SetBrickPtr(Brick** _brick, int count) {
+	void SetBrickPtr(Brick** _brick, int count, int total) {
 		brick = _brick;
 		brickCount = count;
+		brickTotal = total;
 	}
 
 private:
@@ -57,6 +58,7 @@ private:
 	int explodingLevel = 1;
 
 	int brickCount = 0;
+	int brickTotal = 0;
 
 	static constexpr int SPRITE_SIZE = 64;
 	static constexpr float BRICK_SIZE = 64.0f;

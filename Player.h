@@ -1,5 +1,6 @@
 #pragma once
 #include "Map.h"
+#include "game.h"
 
 class Bomb;
 class Brick;
@@ -16,13 +17,16 @@ public:
 
 
 	void Draw();
-	void Pixel();
+	void Pixel(int frameNumber);
 	void SetMapPtr(Map* _map) { map = _map; }
 	void SetBombPtr(Bomb* _bomb) { bomb = _bomb; }
-	void SetBrickPtr(Brick** _brick, int count) {
+	void SetGamePtr(Game* _game) { game = _game; }
+	void SetBrickPtr(Brick** _brick, int count, int total) {
 		brick = _brick;
 		brickCount = count;
+		brickTotal = total;
 	}
+
 	int2 getPos();
 	bool Get_E();
 	float getX() const { return tx; }
@@ -39,6 +43,7 @@ private:
 	Map* map = nullptr;
 	Bomb* bomb = nullptr;
 	Brick** brick = nullptr;
+	Game* game = nullptr;
 
 	int frame = 4;
 	float x = 64;
@@ -56,5 +61,6 @@ private:
 	float s_frameCooldown = 0.2f;
 
 	int brickCount = 0;
+	int brickTotal = 0;
 };
 

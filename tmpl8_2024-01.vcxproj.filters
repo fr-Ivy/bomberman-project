@@ -35,6 +35,9 @@
     <ClCompile Include="Brick.cpp">
       <Filter>Bricks</Filter>
     </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Door</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -77,6 +80,9 @@
     <ClInclude Include="Brick.h">
       <Filter>Bricks</Filter>
     </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Door</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -107,6 +113,9 @@
     </Filter>
     <Filter Include="Bricks">
       <UniqueIdentifier>{99394c25-6867-45fa-94d4-00612604faec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Door">
+      <UniqueIdentifier>{ad3cb3e1-519a-4abe-b95d-fe7842e3f8f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

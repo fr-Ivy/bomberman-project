@@ -86,7 +86,6 @@ void Player::move(float deltaTime)
 		if (s_frame <= 0.0f)
 		{
 			frame = (frame + 1) % 3 + 9;
-			Pixel();
 			s_frame = s_frameCooldown;
 		}
 	}
@@ -99,7 +98,6 @@ void Player::move(float deltaTime)
 		if (s_frame <= 0.0f)
 		{
 			frame = (frame + 1) % 3;
-			Pixel();
 			s_frame = s_frameCooldown;
 		}
 	}
@@ -112,7 +110,6 @@ void Player::move(float deltaTime)
 		if (s_frame <= 0.0f)
 		{
 			frame = (frame + 1) % 3 + 3;
-			Pixel();
 			s_frame = s_frameCooldown;
 		}
 	}
@@ -125,13 +122,12 @@ void Player::move(float deltaTime)
 		if (s_frame <= 0.0f)
 		{
 			frame = (frame + 1) % 3 + 6;
-			Pixel();
 			s_frame = s_frameCooldown;
 		}
 	}
 
 	bool brickCollision = false;
-	for (int i = 0; i < brickCount; i++) {
+	for (int i = game->currentLevel * brickCount; i < brickCount * game->currentLevel + brickCount; i++) {
 		
 		if (brick[i] && brick[i]->checkCollision(tx, ty, SPRITE_SIZE)) {
 			brickCollision = true;
@@ -193,25 +189,26 @@ void Player::Draw()
 	{
 		playerSprite->Draw(screen, x, y);
 		playerSprite->SetFrame(frame);
+		Pixel(frame);
 	}
 }
 
 
-void Player::Pixel()
+void Player::Pixel(int frameNumber)
 {
 	uint* pixels = playerSprite->GetBuffer();
+	int frameOffset = frameNumber * SPRITE_SIZE * SPRITE_SIZE;
 
 	for (int y = 0; y < SPRITE_SIZE; y++)
 	{
 		for (int x = 0; x < SPRITE_SIZE; x++)
 		{
-			uint32_t pixel = pixels[x + y * SPRITE_SIZE];
+			uint32_t pixel = pixels[x + y * SPRITE_SIZE + frameOffset];
 			pixelVisible[x + y * SPRITE_SIZE] = (pixel != 0);
-			//cout << SPRITE_SIZE << ", " << sprite->GetBuffer() << endl;
-			//cout << pixels[x + y * SPRITE_SIZE] << endl;
 		}
 	}
 }
+
 
 int2 Player::getPos()
 {
