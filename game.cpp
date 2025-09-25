@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Bomb.h"
 #include "Brick.h"
+#include <iostream>
 
 void Game::Init()
 {
@@ -19,30 +20,50 @@ void Game::Init()
 	{
 		bricks[i] = new Brick(screen, bomb, map);
 		bricks[i]->choosePos();
-
 	}
+
 	player->SetMapPtr(map);
 	player->SetBrickPtr(bricks, amountBricks);
 	bomb->SetBrickPtr(bricks, amountBricks);
+	bomb->SetGamePtr(this);
 
 	srand(static_cast<unsigned int>(time(0)));
 }
 
+void Game::deleteBrick(int index)
+{
+	if (index < 0 || index >= amountBricks) return;
+	if (!bricks[index]) return;
+
+	std::cout << "Before delete: bricks[" << index << "] = " << bricks[index] << "\n";
+	delete bricks[index];
+	bricks[index] = nullptr;
+	std::cout << "after delete: bricks[" << index << "] = " << bricks[index] << "\n";
+
+}
+
+void Game::Level1()
+{
+	for (int i = 0; i < amountBricks; i++)
+	{
+		if (bricks[i])
+		{
+			bricks[i]->Draw();
+		}
+	}
+}
 
 void Game::Tick( float deltaTime )
 {
 	screen->Clear(0x000000);
 	map->RenderMap(screen);
 	player->move(deltaTime);
-	player->Draw();
+
 	//map.CheckCollision();
+	player->Draw();
 	bomb->Draw(deltaTime);
 
-
-	for (int i = 0; i < amountBricks; i++)
-	{
-		bricks[i]->Draw();
-	}
+	Level1();
 }
 
 void Game::KeyUp(int key)

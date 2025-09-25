@@ -26,6 +26,9 @@ public:
 	void MouseWheel( float ) { /* implement if you want to handle the mouse wheel */ }
 	void KeyUp(int key);
 	void KeyDown(int key);
+
+	void deleteBrick(int index);
+	void Level1();
 	// data members
 	int2 mousePos;
 
@@ -33,8 +36,12 @@ public:
 	Player* player;
 	Bomb* bomb;
 
-	static constexpr int amountBricks = 20; //80
-	Brick* bricks[amountBricks];	
+
+
+	static constexpr int amountBricks = 80; //80
+	Brick* bricks[amountBricks];
+
+	Surface* brickSurface = nullptr;
 };
 
 } // namespace Tmpl8

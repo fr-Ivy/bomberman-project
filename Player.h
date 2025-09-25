@@ -28,6 +28,10 @@ public:
 	float getX() const { return tx; }
 	float getY() const { return ty; }
 
+	static constexpr int SPRITE_SIZE = 64;
+
+	bool pixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
+
 private:
 	Surface* screen = nullptr;
 	Sprite* playerSprite = nullptr;
@@ -48,12 +52,9 @@ private:
 	bool D = false;
 	bool E = false;
 
-	static constexpr int SPRITE_SIZE = 64;
 	float s_frame = 0.2f;
 	float s_frameCooldown = 0.2f;
 
 	int brickCount = 0;
-
-	bool pixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
 };
 

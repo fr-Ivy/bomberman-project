@@ -10,6 +10,8 @@ Brick::Brick(Surface* screen, Bomb* bomb, Map* map)
 	: bomb(bomb), map(map)
 {
 	this->screen = screen;
+	std::cout << "Brick constructor: " << this << std::endl;
+
 	brickSprite = new Sprite(new Surface("assets/brick.png"), 7);
 }
 
@@ -36,11 +38,35 @@ bool Brick::checkCollision(int tx, int ty, int SPRITE_SIZE)
 		x - cameraX + BRICK_SIZE > tx && y + BRICK_SIZE > ty);
 }
 
+void Brick::playAnimation(float deltaTime, bool resetFrame)
+{
+	if (resetFrame)
+	{
+		brickFrame = 0;
+	}
+
+	if (brickFrame < 7)
+	{
+		brickSprite->SetFrame(brickFrame);
+	}
+
+	frameCountdown -= deltaTime;
+
+	if (frameCountdown <= 0.0f)
+	{
+		brickFrame = (brickFrame + 1);
+		frameCountdown = 1.0f / 7.0f;
+	}
+
+	if (brickFrame >= 6 && frameCountdown <= 0.05f)
+	{
+		animationEnded = true;
+	}
+}
+
 
 void Brick::Draw()
 {
-	int cameraX = map->getCamera();
-
 	if (brickSprite)
 	{
 		brickSprite->Draw(screen, x - cameraX, y);

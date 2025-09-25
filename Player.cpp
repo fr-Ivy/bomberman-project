@@ -1,6 +1,5 @@
 #include "precomp.h"
 #include "Player.h"
-#include "game.h"
 #include "Map.h"
 #include "Bomb.h"
 #include "Brick.h"
@@ -133,7 +132,8 @@ void Player::move(float deltaTime)
 
 	bool brickCollision = false;
 	for (int i = 0; i < brickCount; i++) {
-		if (brick[i]->checkCollision(tx, ty, SPRITE_SIZE)) {
+		
+		if (brick[i] && brick[i]->checkCollision(tx, ty, SPRITE_SIZE)) {
 			brickCollision = true;
 			break;
 		}
