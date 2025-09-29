@@ -8,13 +8,18 @@
 #include "Player.h"
 #include "Bomb.h"
 #include "Brick.h"
+#include "Door.h"
 #include <iostream>
 
 void Game::Init()
 {
+	doorSprite = new Sprite(new Surface("assets/door.png"), 1);
+
 	player = new Player(screen);
 	map = new Map(); //On the heap memory
 	bomb = new Bomb(screen, player, map);
+	door = new Door(doorSprite, screen);
+
 
 	for (int i = 0; i < levels * amountBricks; i++)
 	{
@@ -27,6 +32,13 @@ void Game::Init()
 	bomb->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
 	bomb->SetGamePtr(this);
 	player->SetGamePtr(this);
+	door->SetGamePtr(this);
+	door->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
+	door->SetMapPtr(map);
+
+
+	door->ChoosePosition();
+
 
 	srand(static_cast<unsigned int>(time(0)));
 }
@@ -36,10 +48,10 @@ void Game::deleteBrick(int index)
 	if (index < 0 || index >= amountBricks * levels) return;
 	if (!bricks[index]) return;
 
-	std::cout << "Before delete: bricks[" << index << "] = " << bricks[index] << "\n";
+	//std::cout << "Before delete: bricks[" << index << "] = " << bricks[index] << "\n";
 	delete bricks[index];
 	bricks[index] = nullptr;
-	std::cout << "after delete: bricks[" << index << "] = " << bricks[index] << "\n";
+	//std::cout << "after delete: bricks[" << index << "] = " << bricks[index] << "\n";
 
 }
 
@@ -72,6 +84,7 @@ void Game::Tick( float deltaTime )
 	player->move(deltaTime);
 
 	//map.CheckCollision();
+	door->Draw();
 	player->Draw();
 	bomb->Draw(deltaTime);
 

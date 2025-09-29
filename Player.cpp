@@ -196,15 +196,20 @@ void Player::Draw()
 
 void Player::Pixel(int frameNumber)
 {
-	uint* pixels = playerSprite->GetBuffer();
-	int frameOffset = frameNumber * SPRITE_SIZE * SPRITE_SIZE;
+	uint32_t* pixels = playerSprite->GetBuffer();
+	int frameOffset = frameNumber * SPRITE_SIZE;
 
-	for (int y = 0; y < SPRITE_SIZE; y++)
+	for (int ty = 0; ty < SPRITE_SIZE; ty++)
 	{
-		for (int x = 0; x < SPRITE_SIZE; x++)
+		for (int tx = 0; tx < SPRITE_SIZE; tx++)
 		{
-			uint32_t pixel = pixels[x + y * SPRITE_SIZE + frameOffset];
-			pixelVisible[x + y * SPRITE_SIZE] = (pixel != 0);
+			uint32_t pixel = pixels[tx + frameOffset + ty * SPRITE_SIZE * 19];
+			pixelVisible[tx + ty * SPRITE_SIZE] = (pixel != 0);
+			bool visible = pixelVisible[tx + ty * SPRITE_SIZE];
+			if (visible)
+			{
+				//screen->Plot(x + tx, y + ty, 0xFF0000);
+			}
 		}
 	}
 }

@@ -37,7 +37,7 @@ void Bomb::Draw(float deltaTime)
 	{
 		startCountdown = true;
 		bombCountdown = 3.0f;
-		explosionCountdown = 10.0f;
+		explosionCountdown = 1.0f;
 		playerPos = player->getPos();
 		cameraX = playerPos.x;
 		playerPos.x = (playerPos.x + cameraX) / 64 * 64 - startPosX;
@@ -137,13 +137,15 @@ void Bomb::Draw(float deltaTime)
 					if (i == range - 1)
 					{
 						explosionSprite->SetFrame(j * 4 + 16 + 4 + currentFrame);
+						getExplosionMask(j * 4  + 16 + 4 + currentFrame, explosionX, explosionY);
+
 					}
 					else
 					{
 						explosionSprite->SetFrame(j * 4 + 4 + currentFrame);
+						getExplosionMask(j * 4 + 4 + currentFrame, explosionX, explosionY);
 					}
 
-					getExplosionMask(currentFrame);
 
 					explosionSprite->Draw(screen, playerPos.x + positionX - cameraX, playerPos.y + positionY);
 
@@ -153,7 +155,7 @@ void Bomb::Draw(float deltaTime)
 						if (PlayerExplosionCollision(explosionX - cameraX, explosionY, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE) ||
 							PlayerExplosionCollision(playerPos.x + positionX - cameraX, playerPos.y + positionY, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE))
 						{
-
+							//cout << "nothing" << endl;
 						}
 					}
 
@@ -180,14 +182,24 @@ bool Bomb::Collision(int explosionX, int explosionY, int tx, int ty, int otherSP
 		explosionX + SPRITE_SIZE > tx && explosionY + SPRITE_SIZE > ty);
 }
 
-void Bomb::getExplosionMask(int frameNumber)
+void Bomb::getExplosionMask(int frameNumber, int explosionX, int explosionY)
 {
-	uint* pixels = explosionSprite->GetBuffer();
-	int frameOffset = frameNumber * SPRITE_SIZE * SPRITE_SIZE;
+	uint32_t* pixels = explosionSprite->GetBuffer();
+	int frameOffset = frameNumber * SPRITE_SIZE;
 
 	for (int y = 0; y < SPRITE_SIZE; y++)
+	{
 		for (int x = 0; x < SPRITE_SIZE; x++)
-			ExplosionPixelVisible[x + y * SPRITE_SIZE] = (pixels[x + y * SPRITE_SIZE + frameOffset] != 0);
+		{
+			uint32_t pixel = pixels[x + frameOffset + y * SPRITE_SIZE * 36];
+			ExplosionPixelVisible[x + y * SPRITE_SIZE] = (pixel != 0);
+			bool visible = ExplosionPixelVisible[x + y * SPRITE_SIZE];
+			if (visible)
+			{
+				//screen->Plot(explosionX + x - cameraX, explosionY + y, 0x000000);
+			}
+		}
+	}
 }
 
 
@@ -211,8 +223,6 @@ bool Bomb::PlayerExplosionCollision(int explosionX, int explosionY, int tx, int 
 	int rows = bottom - top;
 	//std::cout << "columns=" << columns << ", rows=" << rows << std::endl;
 
-	if (columns <= 0 || rows <= 0) return false;
-
 	playerLeft = left - playerLeft;
 	playerTop = top - playerTop;
 	explosionLeft = left - explosionLeft;
@@ -228,10 +238,12 @@ bool Bomb::PlayerExplosionCollision(int explosionX, int explosionY, int tx, int 
 				ExplosionPixelVisible[(explosionLeft + x) + (explosionTop + y) * SPRITE_SIZE])
 			{
 				//cout << "hit" << endl;
-				screen->Plot(left + x, top + y, 0x002880);
+				//screen->Plot(left + x, top + y, 0x002880);
 				hit = true;
 			}
 		}
 	}
 	return hit;
+
+	//recources: https://croakingkero.com/tutorials/pixel_collision_detection/
 }

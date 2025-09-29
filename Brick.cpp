@@ -11,9 +11,9 @@ Brick::Brick(Surface* screen, Bomb* bomb, Map* map)
 	: bomb(bomb), map(map)
 {
 	this->screen = screen;
-	std::cout << "Brick constructor: " << this << std::endl;
+	//std::cout << "Brick constructor: " << this << std::endl;
 
-	brickSprite = new Sprite(new Surface("assets/brick.png"), 7);
+	brickSprite = new Sprite(new Surface("assets/brickSprite.png"), 7);
 }
 
 Brick::~Brick()
