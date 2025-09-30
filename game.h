@@ -9,6 +9,7 @@ class Map;
 class Bomb;
 class Brick;
 class Door;
+class Enemy;
 
 namespace Tmpl8
 {
@@ -34,11 +35,11 @@ public:
 	// data members
 	int2 mousePos;
 
-	Map* map;
-	Player* player;
-	Bomb* bomb;
-	Door* door;
-
+	Map* map = nullptr;
+	Player* player = nullptr;
+	Bomb* bomb = nullptr;
+	Door* door = nullptr;
+	Enemy* enemy1 = nullptr;
 
 
 	static constexpr int amountBricks = 20; //80
@@ -47,6 +48,7 @@ public:
 	Brick* bricks[amountBricks * levels];
 
 	Sprite* doorSprite = nullptr;
+	Sprite* enemySprite1 = nullptr;
 };
 
 } // namespace Tmpl8

@@ -18,6 +18,7 @@ public:
 	void SetMapPtr(Map* _map) { map = _map; }
 
 	void ChoosePosition();
+	bool collision(int tx, int ty, int otherSPRITE_SIZE);
 	void Draw();
 private:
 	Sprite* doorSprite = nullptr;
@@ -29,6 +30,7 @@ private:
 	int x = 0;
 	int y = 0;
 	int cameraX = 0;
+	int SPRITE_SIZE = 64;
 
 	int brickCount = 0;
 	int brickTotal = 0;

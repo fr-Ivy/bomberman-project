@@ -9,38 +9,43 @@
 #include "Bomb.h"
 #include "Brick.h"
 #include "Door.h"
+#include "Enemy.h"
+#include "Enemy1.h"
 #include <iostream>
 
 void Game::Init()
 {
+	srand(static_cast<unsigned int>(time(0)));
 	doorSprite = new Sprite(new Surface("assets/door.png"), 1);
+	enemySprite1 = new Sprite(new Surface("assets/enemy1.png"), 11);
 
-	player = new Player(screen);
 	map = new Map(); //On the heap memory
+	player = new Player(screen);
 	bomb = new Bomb(screen, player, map);
 	door = new Door(doorSprite, screen);
+	enemy1 = new Enemy1(screen, enemySprite1, map, player, this);
 
+	player->SetGamePtr(this);	
+	player->SetMapPtr(map);
+	player->SetDoorPtr(door);
+	player->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
+	
+	bomb->SetGamePtr(this);
+	bomb->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
+
+	door->SetGamePtr(this);
+	door->SetMapPtr(map);
+	door->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
+	enemy1->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
 
 	for (int i = 0; i < levels * amountBricks; i++)
 	{
 		bricks[i] = new Brick(screen, bomb, map);
 		bricks[i]->choosePos();
 	}
-
-	player->SetMapPtr(map);
-	player->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
-	bomb->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
-	bomb->SetGamePtr(this);
-	player->SetGamePtr(this);
-	door->SetGamePtr(this);
-	door->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
-	door->SetMapPtr(map);
-
-
 	door->ChoosePosition();
 
-
-	srand(static_cast<unsigned int>(time(0)));
+	enemy1->chooseRandomPos();
 }
 
 void Game::deleteBrick(int index)
@@ -79,14 +84,18 @@ void Game::Level1()
 
 void Game::Tick( float deltaTime )
 {
+	//cout << currentLevel << endl;
 	screen->Clear(0x000000);
 	map->RenderMap(screen);
 	player->move(deltaTime);
+	player->GoToNextLevel(deltaTime);
+	enemy1->move(deltaTime);
 
 	//map.CheckCollision();
 	door->Draw();
 	player->Draw();
 	bomb->Draw(deltaTime);
+	enemy1->Draw();
 
 	switch (currentLevel)
 	{

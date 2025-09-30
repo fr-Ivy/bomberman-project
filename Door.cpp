@@ -13,15 +13,28 @@ Door::Door(Sprite* doorSprite, Surface* screen)
 
 void Door::ChoosePosition()
 {
-	chosenBrick = rand() % brickCount + game->currentLevel * brickCount;
+	//chosenBrick = rand() % brickCount + game->currentLevel * brickCount;
+
+	do
+	{
+		chosenBrick = rand() % brickCount + game->currentLevel * brickCount;
+	} while (!brick[chosenBrick]);
+
 	x = brick[chosenBrick]->getX();
 	y = brick[chosenBrick]->getY();
+	//cout << chosenBrick << endl;
+}
 
-	cout << chosenBrick << endl;
+bool Door::collision(int tx, int ty, int otherSPRITE_SIZE)
+{
+	cameraX = map->getCamera();
+	//cout << x << ", " << y << endl;
+	//cout << tx << ", " << ty << endl;
+	return (x - cameraX < tx + otherSPRITE_SIZE && y < ty + otherSPRITE_SIZE &&
+		x - cameraX + SPRITE_SIZE > tx && y + SPRITE_SIZE > ty);
 }
 
 void Door::Draw()
 {
-	cameraX = map->getCamera();
 	doorSprite->Draw(screen, x - cameraX, y);
 }

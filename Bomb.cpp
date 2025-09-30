@@ -83,10 +83,10 @@ void Bomb::Draw(float deltaTime)
 				explosionFrameCountdown = s_frameCooldown;
 			}
 
-
-
 			explosionSprite->SetFrame(currentFrame);
+			getExplosionMask(currentFrame, playerPos.x, playerPos.y);
 			explosionSprite->Draw(screen, playerPos.x - cameraX, playerPos.y);
+
 
 			resetBrickFrame = false;
 
@@ -117,7 +117,6 @@ void Bomb::Draw(float deltaTime)
 							}
 						}
 
-
 						if ((brick[b] && Collision(explosionX, explosionY, brick[b]->getX(), brick[b]->getY(), BRICK_SIZE)) ||
 							map->CheckCollision(explosionX - cameraX, explosionY))
 						{
@@ -127,7 +126,6 @@ void Bomb::Draw(float deltaTime)
 
 					//cout << "Player pos: " << currentPlayerPos.x << ", " << currentPlayerPos.y << endl;
 					//cout << "Explosion pos: " << explosionX << ", " << explosionY << endl;
-
 
 					if (collision)
 					{
@@ -146,27 +144,28 @@ void Bomb::Draw(float deltaTime)
 						getExplosionMask(j * 4 + 4 + currentFrame, explosionX, explosionY);
 					}
 
+					getExplosionMask(currentFrame, playerPos.x, playerPos.y);
 
 					explosionSprite->Draw(screen, playerPos.x + positionX - cameraX, playerPos.y + positionY);
 
 					if (Collision(explosionX - cameraX, explosionY, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE) ||
-						Collision(playerPos.x + positionX - cameraX, playerPos.y + positionY, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE))
+						Collision(playerPos.x - cameraX, playerPos.y, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE))
 					{
 						if (PlayerExplosionCollision(explosionX - cameraX, explosionY, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE) ||
-							PlayerExplosionCollision(playerPos.x + positionX - cameraX, playerPos.y + positionY, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE))
+							PlayerExplosionCollision(playerPos.x - cameraX, playerPos.y, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE))
 						{
 							//cout << "nothing" << endl;
 						}
 					}
 
-					exploded = true;
+					//exploded = true;
 				}
 			}
 		}
 		else
 		{
 			startCountdown = false;
-			exploded = false;
+			//exploded = false;
 			playerCollision = false;
 			currentFrame = 0;
 			resetBrickFrame = true;
@@ -238,7 +237,7 @@ bool Bomb::PlayerExplosionCollision(int explosionX, int explosionY, int tx, int 
 				ExplosionPixelVisible[(explosionLeft + x) + (explosionTop + y) * SPRITE_SIZE])
 			{
 				//cout << "hit" << endl;
-				//screen->Plot(left + x, top + y, 0x002880);
+				screen->Plot(left + x, top + y, 0x002880);
 				hit = true;
 			}
 		}

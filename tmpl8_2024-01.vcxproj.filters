@@ -38,6 +38,12 @@
     <ClCompile Include="Door.cpp">
       <Filter>Door</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy1.cpp">
+      <Filter>Enemy\Enemy1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -83,6 +89,12 @@
     <ClInclude Include="Door.h">
       <Filter>Door</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy1.h">
+      <Filter>Enemy\Enemy1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -116,6 +128,12 @@
     </Filter>
     <Filter Include="Door">
       <UniqueIdentifier>{ad3cb3e1-519a-4abe-b95d-fe7842e3f8f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{4399b8ed-849e-48be-9355-bfe7f2904ce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\Enemy1">
+      <UniqueIdentifier>{c2ef9a77-9179-494a-91be-fea915ec3d51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

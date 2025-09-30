@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Bomb.h"
 #include "Brick.h"
+#include "Door.h"
 #include <iostream>
 
 Player::Player(Surface* screen)
@@ -127,9 +128,10 @@ void Player::move(float deltaTime)
 	}
 
 	bool brickCollision = false;
-	for (int i = game->currentLevel * brickCount; i < brickCount * game->currentLevel + brickCount; i++) {
-		
-		if (brick[i] && brick[i]->checkCollision(tx, ty, SPRITE_SIZE)) {
+	for (int i = game->currentLevel * brickCount; i < brickCount * game->currentLevel + brickCount; i++) 
+	{		
+		if (brick[i] && brick[i]->checkCollision(tx, ty, SPRITE_SIZE)) 
+		{
 			brickCollision = true;
 			break;
 		}
@@ -178,10 +180,29 @@ void Player::move(float deltaTime)
 	}
 
 	map->camera(x);
+
 	//bomb->getPosition(x, y);
 	//cout << x << ", " << y << endl;
 }
 
+void Player::GoToNextLevel(float deltaTime)
+{
+	deltaTime /= 1000.0f;
+	doorCountdown -= deltaTime;
+
+	if (door->collision(x, y, SPRITE_SIZE))
+	{
+		if (!this || !game || !door) return;
+
+		if (doorCountdown <= 0.0f)
+		{
+			game->currentLevel = (game->currentLevel + 1) % 2;
+			door->ChoosePosition();
+			//cout << "hit" << endl;
+			doorCountdown = 1.0f;
+		}
+	}
+}
 
 void Player::Draw()
 {
@@ -192,7 +213,6 @@ void Player::Draw()
 		Pixel(frame);
 	}
 }
-
 
 void Player::Pixel(int frameNumber)
 {
@@ -213,7 +233,6 @@ void Player::Pixel(int frameNumber)
 		}
 	}
 }
-
 
 int2 Player::getPos()
 {
