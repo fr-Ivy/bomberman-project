@@ -5,6 +5,11 @@ class Map;
 class Player;
 class Brick;
 
+enum Direction
+{
+	 LEFT, RIGHT, UP, DOWN, NONE,
+};
+
 class Enemy
 {
 public:
@@ -30,6 +35,7 @@ public:
 	float cameraX = 0;
 
 	int SPRITE_SIZE = 64;
+	int TILE_SIZE = 64;
 
 	Map* map = nullptr;
 	Player* player = nullptr;
@@ -38,6 +44,7 @@ public:
 
 	int brickCount = 0;
 	int brickTotal = 0;
+	Direction currDir = Direction::NONE;
 
 private:
 	int mapHeight = 11 * 64;

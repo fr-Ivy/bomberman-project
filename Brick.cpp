@@ -21,7 +21,12 @@ Brick::~Brick()
 	delete brickSprite;
 }
 
-
+bool Brick::CheckStartPos(int x, int y)
+{
+	x = x / TILE_SIZE;
+	y = y / TILE_SIZE;
+	return false;
+}
 
 void Brick::choosePos()
 {

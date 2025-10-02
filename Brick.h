@@ -8,6 +8,7 @@ class Brick
 public:
 	Brick(Surface* screen, Bomb* bomb, Map* map);
 	~Brick();
+	bool CheckStartPos(int x, int y);
 	void choosePos();
 	bool checkCollision(int tx, int ty, int SPRITE_SIZE);
 	void playAnimation(float deltaTime, bool resetFrame);
@@ -23,6 +24,7 @@ private:
 
 	int mapHeight = 11 * 64;
 	int mapWidth = 31 * 64;
+	int TILE_SIZE = 64;
 
 	int x = 0;
 	int y = 0;

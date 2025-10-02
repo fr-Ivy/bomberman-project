@@ -118,7 +118,8 @@ bool Map::CheckCollision(int tx, int ty) const
 bool Map::checkPixelCollision(const bool* playerPixelVisible, int tx, int ty, int SPRITE_SIZE) const
 {
 	bool tilePixelVisible[TILE_SIZE * TILE_SIZE];
-	for (int i = 0; i < TILE_SIZE * TILE_SIZE; i++) {
+	for (int i = 0; i < TILE_SIZE * TILE_SIZE; i++) 
+	{
 		tilePixelVisible[i] = true;
 	}
 

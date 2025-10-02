@@ -14,6 +14,7 @@ Enemy::Enemy(Surface* screen, Sprite* enemySprite, Map* map, Player* player, Gam
 void Enemy::Draw()
 {
 	enemySprite->Draw(screen, screenX, y);
+
 }
 
 void Enemy::chooseRandomPos()
