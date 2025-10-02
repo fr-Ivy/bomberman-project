@@ -27,10 +27,12 @@ public:
 	Surface* screen = nullptr;
 	Sprite* enemySprite = nullptr;
 
-	float x = 0;
-	float y = 0;
-	float tx = 0;
-	float ty = 0;
+	float x = 0.0f;
+	float y = 0.0f;
+	float tx = 0.0f;
+	float ty = 0.0f;
+	float vX = 0.0f;
+	float vY = 0.0f;
 	float screenX = 0;
 	float cameraX = 0;
 

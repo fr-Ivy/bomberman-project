@@ -17,12 +17,6 @@ public:
 
 
 private:
-	float vX = 0.0f;
-	float vY = 0.0f;
-	float directionCountdown = 0.5f;
 	bool BrickCollision = false;
-
-	int lastTileX = -1;
-	int lastTileY = -1;
 };
 

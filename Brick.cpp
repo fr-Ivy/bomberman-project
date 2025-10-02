@@ -23,9 +23,18 @@ Brick::~Brick()
 
 bool Brick::CheckStartPos(int x, int y)
 {
-	x = x / TILE_SIZE;
-	y = y / TILE_SIZE;
-	return false;
+	int px = x / TILE_SIZE;
+	int py = y / TILE_SIZE;
+
+	for (int tx = 1; tx <= 4; tx++)
+	{
+		for (int ty = 1; ty <= 4; ty++)
+		{
+			if (px == tx && py == ty)
+				return false;
+		}
+	}
+	return true;
 }
 
 void Brick::choosePos()
@@ -34,7 +43,7 @@ void Brick::choosePos()
 	{
 		x = (rand() % (mapWidth / 64)) * 64;
 		y = (rand() % (mapHeight / 64)) * 64;
-	} while (map->CheckCollision(x, y));
+	} while (map->CheckCollision(x, y) || !CheckStartPos(x, y));
 }
 
 bool Brick::checkCollision(int tx, int ty, int SPRITE_SIZE)
