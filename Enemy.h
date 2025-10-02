@@ -5,7 +5,7 @@ class Map;
 class Player;
 class Brick;
 
-enum Direction
+enum class Direction
 {
 	 LEFT, RIGHT, UP, DOWN, NONE,
 };
@@ -44,7 +44,7 @@ public:
 
 	int brickCount = 0;
 	int brickTotal = 0;
-	Direction currDir = Direction::NONE;
+	Direction currDirection = Direction::NONE;
 
 private:
 	int mapHeight = 11 * 64;

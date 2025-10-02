@@ -13,8 +13,9 @@ Enemy::Enemy(Surface* screen, Sprite* enemySprite, Map* map, Player* player, Gam
 
 void Enemy::Draw()
 {
+	cameraX = map->getCamera();
+	screenX = x - cameraX;
 	enemySprite->Draw(screen, screenX, y);
-
 }
 
 void Enemy::chooseRandomPos()
@@ -24,6 +25,7 @@ void Enemy::chooseRandomPos()
 		x = (rand() % (mapWidth / 64)) * 64;
 		y = (rand() % (mapHeight / 64)) * 64;
 	} while (map->CheckCollision(x, y));
+	cout << x << ", " << y << endl;
 }
 
 void Enemy::move(float deltaTime)

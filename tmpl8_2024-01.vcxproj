@@ -125,7 +125,7 @@
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Enemy1.cpp" />
+    <ClCompile Include="Valcom.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -151,7 +151,7 @@
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Enemy1.h" />
+    <ClInclude Include="Valcom.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />

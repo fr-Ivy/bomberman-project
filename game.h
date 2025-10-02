@@ -39,7 +39,7 @@ public:
 	Player* player = nullptr;
 	Bomb* bomb = nullptr;
 	Door* door = nullptr;
-	Enemy* enemy1 = nullptr;
+	Enemy* valcom1 = nullptr;
 
 
 	static constexpr int amountBricks = 20; //80

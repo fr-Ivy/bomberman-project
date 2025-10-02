@@ -10,7 +10,7 @@
 #include "Brick.h"
 #include "Door.h"
 #include "Enemy.h"
-#include "Enemy1.h"
+#include "Valcom.h"
 #include <iostream>
 
 void Game::Init()
@@ -23,7 +23,7 @@ void Game::Init()
 	player = new Player(screen);
 	bomb = new Bomb(screen, player, map);
 	door = new Door(doorSprite, screen);
-	enemy1 = new Enemy1(screen, enemySprite1, map, player, this);
+	valcom1 = new Valcom(screen, enemySprite1, map, player, this);
 
 	player->SetGamePtr(this);	
 	player->SetMapPtr(map);
@@ -36,7 +36,7 @@ void Game::Init()
 	door->SetGamePtr(this);
 	door->SetMapPtr(map);
 	door->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
-	enemy1->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
+	valcom1->SetBrickPtr(bricks, amountBricks, amountBricks * levels);
 
 	for (int i = 0; i < levels * amountBricks; i++)
 	{
@@ -45,7 +45,7 @@ void Game::Init()
 	}
 	door->ChoosePosition();
 
-	enemy1->chooseRandomPos();
+	valcom1->chooseRandomPos();
 }
 
 void Game::deleteBrick(int index)
@@ -89,13 +89,13 @@ void Game::Tick( float deltaTime )
 	map->RenderMap(screen);
 	player->move(deltaTime);
 	player->GoToNextLevel(deltaTime);
-	enemy1->move(deltaTime);
+	valcom1->move(deltaTime);
 
 	//map.CheckCollision();
 	door->Draw();
 	player->Draw();
 	bomb->Draw(deltaTime);
-	enemy1->Draw();
+	valcom1->Draw();
 
 	switch (currentLevel)
 	{
