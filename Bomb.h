@@ -13,14 +13,14 @@ public:
 	Bomb(Surface* screen, Player* player, Map* map);
 	~Bomb();
 	//getters and setters should be class defined. I cannot get someone else's organs for example
-	void Draw(float deltaTime);
+	void Draw(Surface* surface, int camera, float const deltaTime);
 	bool Collision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE);
-	void getExplosionMask(int frameNumber, int explosionX, int explosionY);
-	bool PlayerExplosionCollision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE);
+	void GetExplosionMask(int frameNumber);
+	bool PlayerExplosionCollision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE) const;
 
 
 	void SetGamePtr(Game* _game) { game = _game; }
-	void SetBrickPtr(Brick** _brick, int count, int total) {
+	void SetBrickPtr(Brick** _brick, int const count, int const total) {
 		brick = _brick;
 		brickCount = count;
 		brickTotal = total;
@@ -33,7 +33,8 @@ private:
 
 	int2 playerPos = { 0,0 };
 	int2 currentPlayerPos = { 0,0 };
-	int cameraX = 0.0f;
+	int cameraX1 = 0.0f;
+	int cameraX2 = 0.0f;
 	float startPosX = 64.0f;
 	int frame = 0;
 	int range = 2;
@@ -46,6 +47,7 @@ private:
 	bool exploded = false;
 	bool playerCollision = false;
 	bool resetBrickFrame = false;
+	bool foundBrick = false;
 
 	int currentFrame = 0;
 
@@ -64,7 +66,7 @@ private:
 	static constexpr float BRICK_SIZE = 64.0f;
 	static constexpr float PLAYER_SPRITE = 64.0f;
 
-	bool ExplosionPixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
+	bool explosionPixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
 
 	Player* player = nullptr;
 	Map* map = nullptr;

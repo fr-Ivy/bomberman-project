@@ -29,15 +29,15 @@ public:
 	void KeyUp(int key);
 	void KeyDown(int key);
 
-	void deleteBrick(int index);
+	void DeleteBrick(int index);
 	void Level0();
 	void Level1();
 	// data members
 	int2 mousePos;
 
 	Map* map = nullptr;
-	Player* player = nullptr;
-	Bomb* bomb = nullptr;
+	Player* player[2] = { nullptr };
+	Bomb* bomb[2] = { nullptr };
 	Door* door = nullptr;
 	Enemy* valcom1 = nullptr;
 
@@ -49,6 +49,11 @@ public:
 
 	Sprite* doorSprite = nullptr;
 	Sprite* enemySprite1 = nullptr;
+
+	Surface* screen2 = nullptr;
+	Surface* screen1 = nullptr;
+
+	int TILE_SIZE = 64;
 };
 
 } // namespace Tmpl8

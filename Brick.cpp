@@ -7,11 +7,12 @@
 #include <iostream>
 #include "game.h"
 
-Brick::Brick(Surface* screen, Bomb* bomb, Map* map)
+Brick::Brick(Surface* screen1, Surface* screen2, Bomb* bomb, Map* map)
 	: bomb(bomb), map(map)
 {
-	this->screen = screen;
-	//std::cout << "Brick constructor: " << this << std::endl;
+	this->screen1 = screen1;
+	this->screen2 = screen2;
+	//cout << "Brick constructor: " << this << endl;
 
 	brickSprite = new Sprite(new Surface("assets/brickSprite.png"), 7);
 }
@@ -21,7 +22,7 @@ Brick::~Brick()
 	delete brickSprite;
 }
 
-bool Brick::CheckStartPos(int x, int y)
+bool Brick::CheckStartPos(int const x, int const y) const
 {
 	int px = x / TILE_SIZE;
 	int py = y / TILE_SIZE;
@@ -43,21 +44,22 @@ void Brick::choosePos()
 	{
 		x = (rand() % (mapWidth / 64)) * 64;
 		y = (rand() % (mapHeight / 64)) * 64;
-	} while (map->CheckCollision(x, y) || !CheckStartPos(x, y));
+	} while (map->CheckCollision(0, x, y) || !CheckStartPos(x, y));
 }
 
-bool Brick::checkCollision(int tx, int ty, int SPRITE_SIZE)
+bool Brick::checkCollision(int player, int tx, int ty, int SPRITE_SIZE)
 {
-	cameraX = map->getCamera();
+	cameraX = map->getCamera(player);
 	return (x - cameraX < tx + SPRITE_SIZE && y < ty + SPRITE_SIZE &&
 		x - cameraX + BRICK_SIZE > tx && y + BRICK_SIZE > ty);
 }
 
-void Brick::playAnimation(float deltaTime, bool resetFrame)
+void Brick::playAnimation(float const deltaTime, bool resetFrame)
 {
 	if (resetFrame)
 	{
 		brickFrame = 0;
+		resetFrame = false;
 	}
 
 	if (brickFrame < 7)
@@ -77,6 +79,7 @@ void Brick::playAnimation(float deltaTime, bool resetFrame)
 	{
 		animationEnded = true;
 	}
+	cout << animationEnded << endl;
 }
 
 
@@ -84,7 +87,9 @@ void Brick::Draw()
 {
 	if (brickSprite)
 	{
-		cameraX = map->getCamera();
-		brickSprite->Draw(screen, x - cameraX, y);
+		cameraX1 = map->getCamera(0);
+		cameraX2 = map->getCamera(1);
+		brickSprite->Draw(screen1, x - cameraX1, y);
+		brickSprite->Draw(screen2, x - cameraX2, y);
 	}
 }

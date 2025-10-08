@@ -4,31 +4,31 @@
 #include "Brick.h"
 #include <iostream>
 
-Enemy::Enemy(Surface* screen, Sprite* enemySprite, Map* map, Player* player, Game* game)
-	: map(map), player(player), game(game)
+Enemy::Enemy(Surface* screen, Sprite* enemySprite, Map* map, Player* player1, Player* player2, Game* game)
+	: map(map), player1(player1), game(game), player2(player2)
 {
 	this->screen = screen;
 	this->enemySprite = enemySprite;
 }
 
-void Enemy::Draw()
+void Enemy::Draw(Surface* surface, int camera)
 {
-	cameraX = map->getCamera();
-	screenX = x - cameraX;
-	enemySprite->Draw(screen, screenX, y);
+	cameraX1 = map->getCamera(camera); //
+	screenX = x - cameraX1;
+	enemySprite->Draw(surface, screenX, y);
 }
 
-void Enemy::chooseRandomPos()
+void Enemy::ChooseRandomPos()
 {
 	do
 	{
-		x = (rand() % (mapWidth / 64)) * 64;
-		y = (rand() % (mapHeight / 64)) * 64;
-	} while (map->CheckCollision(x, y));
-	cout << x << ", " << y << endl;
+		x = static_cast<float>(rand() % (mapWidth / 64) * 64);
+		y = static_cast<float>(rand() % (mapHeight / 64) * 64);
+	} while (map->CheckCollision(0, x, y));
+	//cout << x << ", " << y << endl;
 }
 
-void Enemy::move(float deltaTime)
+void Enemy::Move(float const deltaTime)
 {
 	cout << "should never be reached" << endl;
 }

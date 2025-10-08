@@ -25,9 +25,9 @@ void Door::ChoosePosition()
 	//cout << chosenBrick << endl;
 }
 
-bool Door::collision(int tx, int ty, int otherSPRITE_SIZE)
+bool Door::collision(int const tx, int const ty, int const otherSPRITE_SIZE)
 {
-	cameraX = map->getCamera();
+	cameraX = map->getCamera(0);
 	//cout << x << ", " << y << endl;
 	//cout << tx << ", " << ty << endl;
 	return (x - cameraX < tx + otherSPRITE_SIZE && y < ty + otherSPRITE_SIZE &&

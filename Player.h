@@ -10,17 +10,21 @@ class Map;
 class Player
 {
 public:
-	Player(Surface* screen);
+	Player(Surface* screen, float x, float y, int camera);
 	~Player();
 
 
-	void KeyDown(int key);
-	void KeyUp(int key);
+	void KeyDownWASD(int key);
+	void KeyUpWASD(int key);
+	void KeyDownARROWS(int key);
+	void KeyUpARROWS(int key);
 	void move(float deltaTime);
+
+	int Camera();
 
 	void GoToNextLevel(float deltaTime);
 
-	void Draw();
+	void Draw(Surface* surface, int camera, int px, int TILE_SIZE);
 	void Pixel(int frameNumber);
 	void SetMapPtr(Map* _map) { map = _map; }
 	void SetBombPtr(Bomb* _bomb) { bomb = _bomb; }
@@ -32,8 +36,8 @@ public:
 		brickTotal = total;
 	}
 
-	int2 getPos();
-	bool Get_E();
+	int2 getPos() const;
+	bool Get_E() const;
 	float getX() const { return tx; }
 	float getY() const { return ty; }
 
@@ -54,14 +58,15 @@ private:
 	int frame = 4;
 	float x = 64;
 	float y = 64;
-	float tx = 64;
-	float ty = 64;
+	float tx = 0;
+	float ty = 0;
+	int camera = 0;
 
-	bool W = false;
-	bool A = false;
-	bool S = false;
-	bool D = false;
-	bool E = false;
+	bool UP = false;
+	bool LEFT = false;
+	bool DOWN = false;
+	bool RIGHT = false;
+	bool CALLBOMB = false;
 
 	float s_frame = 0.2f;
 	float s_frameCooldown = 0.2f;

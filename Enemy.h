@@ -13,10 +13,10 @@ enum class Direction
 class Enemy
 {
 public:
-	Enemy(Surface* screen, Sprite* enemySprite, Map* map, Player* player, Game* game);
-	void Draw();
-	void chooseRandomPos();
-	virtual void move(float deltaTime);
+	Enemy(Surface* screen, Sprite* enemySprite, Map* map, Player* player1, Player* player2, Game* game);
+	void Draw(Surface* surface, int camera);
+	void ChooseRandomPos();
+	virtual void Move(float deltaTime);
 
 	void SetBrickPtr(Brick** _brick, int count, int total) {
 		brick = _brick;
@@ -34,13 +34,15 @@ public:
 	float vX = 0.0f;
 	float vY = 0.0f;
 	float screenX = 0;
-	float cameraX = 0;
+	float cameraX1 = 0;
+	float cameraX2 = 0;
 
 	int SPRITE_SIZE = 64;
 	int TILE_SIZE = 64;
 
 	Map* map = nullptr;
-	Player* player = nullptr;
+	Player* player1 = nullptr;
+	Player* player2 = nullptr;
 	Brick** brick = nullptr;
 	Game* game = nullptr;
 

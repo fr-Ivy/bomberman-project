@@ -6,10 +6,13 @@
 #include "Door.h"
 #include <iostream>
 
-Player::Player(Surface* screen)
+Player::Player(Surface* screen, float const x, float const y, int camera)
 {
 	playerSprite = new Sprite(new Surface("assets/player/playerSprites.png"), 19);
 	this->screen = screen;
+	this->x = x;
+	this->y = y;
+	this->camera = camera;
 }
 
 Player::~Player()
@@ -17,68 +20,111 @@ Player::~Player()
 	delete playerSprite;
 }
 
-void Player::KeyUp(int key)
+void Player::KeyUpWASD(int const key)
 {
 	switch (key)
 	{
-	case GLFW_KEY_UP:
 	case GLFW_KEY_W:
-		W = false;
+		UP = false;
 		break;
-	case GLFW_KEY_LEFT:
 	case GLFW_KEY_A:
-		A = false;
+		LEFT = false;
 		break;
-	case GLFW_KEY_DOWN:
 	case GLFW_KEY_S:
-		S = false;
+		DOWN = false;
 		break;
-	case GLFW_KEY_RIGHT:
 	case GLFW_KEY_D:
-		D = false;
+		RIGHT = false;
 		break;
 	case GLFW_KEY_E:
-		E = false;
+		CALLBOMB = false;
+		break;
+	default:
 		break;
 	}
 }
 
-void Player::KeyDown(int key)
+void Player::KeyDownWASD(int const key)
 {
 	switch (key)
 	{
-	case GLFW_KEY_UP:
 	case GLFW_KEY_W:
-		W = true;
+		UP = true;
 		break;
-	case GLFW_KEY_LEFT:
 	case GLFW_KEY_A:
-		A = true;
+		LEFT = true;
 		break;
-	case GLFW_KEY_DOWN:
 	case GLFW_KEY_S:
-		S = true;
+		DOWN = true;
 		break;
-	case GLFW_KEY_RIGHT:
 	case GLFW_KEY_D:
-		D = true;
+		RIGHT = true;
 		break;
 	case GLFW_KEY_E:
-		E = true;
+		CALLBOMB = true;
+		break;
+	default:
 		break;
 	}
 }
 
-void Player::move(float deltaTime)
+void Player::KeyUpARROWS(int const key)
 {
-	deltaTime /= 1000.0f;
+	switch (key)
+	{
+	case GLFW_KEY_UP:
+		UP = false;
+		break;
+	case GLFW_KEY_LEFT:
+		LEFT = false;
+		break;
+	case GLFW_KEY_DOWN:
+		DOWN = false;
+		break;
+	case GLFW_KEY_RIGHT:
+		RIGHT = false;
+		break;
+	case GLFW_KEY_SLASH:
+		CALLBOMB = false;
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::KeyDownARROWS(int const key)
+{
+	switch (key)
+	{
+	case GLFW_KEY_UP:
+		UP = true;
+		break;
+	case GLFW_KEY_LEFT:
+		LEFT = true;
+		break;
+	case GLFW_KEY_DOWN:
+		DOWN = true;
+		break;
+	case GLFW_KEY_RIGHT:
+		RIGHT = true;
+		break;
+	case GLFW_KEY_SLASH:
+		CALLBOMB = true;
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::move(float const deltaTime)
+{
 	float speed = 100.0f;
 	s_frame -= deltaTime;
 
 	tx = x;
 	ty = y;
 
-	if (W)
+	if (UP)
 	{
 		ty -= speed * deltaTime * 2;
 		//y -= speed * deltaTime;
@@ -90,7 +136,7 @@ void Player::move(float deltaTime)
 			s_frame = s_frameCooldown;
 		}
 	}
-	if (A)
+	if (LEFT)
 	{
 		tx -= speed * deltaTime;
 		//x -= speed * deltaTime;
@@ -102,7 +148,7 @@ void Player::move(float deltaTime)
 			s_frame = s_frameCooldown;
 		}
 	}
-	if (S)
+	if (DOWN)
 	{
 		ty += speed * deltaTime * 2;
 		//y += speed * deltaTime;
@@ -114,7 +160,7 @@ void Player::move(float deltaTime)
 			s_frame = s_frameCooldown;
 		}
 	}
-	if (D)
+	if (RIGHT)
 	{
 		tx += speed * deltaTime;
 		//x += speed * deltaTime;
@@ -130,7 +176,7 @@ void Player::move(float deltaTime)
 	bool brickCollision = false;
 	for (int i = game->currentLevel * brickCount; i < brickCount * game->currentLevel + brickCount; i++) 
 	{		
-		if (brick[i] && brick[i]->checkCollision(tx, ty, SPRITE_SIZE)) 
+		if (brick[i] && brick[i]->checkCollision(camera, tx, ty, SPRITE_SIZE)) 
 		{
 			brickCollision = true;
 			break;
@@ -139,8 +185,8 @@ void Player::move(float deltaTime)
 
 	if (tx > x)
 	{
-		if (!map->CheckCollision(tx + SPRITE_SIZE - 1, y) &&
-			!map->CheckCollision(tx + SPRITE_SIZE - 1, y + SPRITE_SIZE - 1) &&
+		if (!map->CheckCollision(camera, tx + SPRITE_SIZE - 1, y) &&
+			!map->CheckCollision(camera, tx + SPRITE_SIZE - 1, y + SPRITE_SIZE - 1) &&
 			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
@@ -149,8 +195,8 @@ void Player::move(float deltaTime)
 	}
 	else if (tx < x)
 	{
-		if (!map->CheckCollision(tx, y) &&
-			!map->CheckCollision(tx, y + SPRITE_SIZE - 1) &&
+		if (!map->CheckCollision(camera, tx, y) &&
+			!map->CheckCollision(camera, tx, y + SPRITE_SIZE - 1) &&
 			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
@@ -160,8 +206,8 @@ void Player::move(float deltaTime)
 
 	if (ty > y)
 	{
-		if (!map->CheckCollision(x, ty + SPRITE_SIZE - 1) &&
-			!map->CheckCollision(x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1) &&
+		if (!map->CheckCollision(camera, x, ty + SPRITE_SIZE - 1) &&
+			!map->CheckCollision(camera, x + SPRITE_SIZE - 1, ty + SPRITE_SIZE - 1) &&
 			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
@@ -170,24 +216,26 @@ void Player::move(float deltaTime)
 	}
 	else if (ty < y)
 	{
-		if (!map->CheckCollision(x, ty) &&
-			!map->CheckCollision(x + SPRITE_SIZE - 1, ty) &&
+		if (!map->CheckCollision(camera, x, ty) &&
+			!map->CheckCollision(camera, x + SPRITE_SIZE - 1, ty) &&
 			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
 				y = ty;
 		}
 	}
-
-	map->camera(x);
-
 	//bomb->getPosition(x, y);
 	//cout << x << ", " << y << endl;
 }
 
-void Player::GoToNextLevel(float deltaTime)
+//void Player::Camera()
+//{
+//	map->camera(x);
+//}
+
+
+void Player::GoToNextLevel(float const deltaTime)
 {
-	deltaTime /= 1000.0f;
 	doorCountdown -= deltaTime;
 
 	if (door->collision(x, y, SPRITE_SIZE))
@@ -204,17 +252,23 @@ void Player::GoToNextLevel(float deltaTime)
 	}
 }
 
-void Player::Draw()
+void Player::Draw(Surface* surface, int camera, int px, int TILE_SIZE)
 {
 	if (playerSprite)
 	{
-		playerSprite->Draw(screen, x, y);
+		playerSprite->Draw(surface, (x - TILE_SIZE) * px - camera, y);
 		playerSprite->SetFrame(frame);
 		Pixel(frame);
 	}
 }
 
-void Player::Pixel(int frameNumber)
+int Player::Camera()
+{
+	return x - map->TILE_SIZE;
+}
+
+
+void Player::Pixel(int const frameNumber)
 {
 	uint32_t* pixels = playerSprite->GetBuffer();
 	int frameOffset = frameNumber * SPRITE_SIZE;
@@ -234,14 +288,14 @@ void Player::Pixel(int frameNumber)
 	}
 }
 
-int2 Player::getPos()
+int2 Player::getPos() const
 {
 	int2 tmp = { static_cast<int>(x), static_cast<int>(y) };
 	return tmp;
 }
 
-bool Player::Get_E()
+bool Player::Get_E() const
 {
-	return E;
+	return CALLBOMB;
 }
 

@@ -6,48 +6,49 @@
 #include <iostream>
 
 
-Valcom::Valcom(Surface* screen, Sprite* enemySprite, Map* map, Player* player, Game* game)
-	: Enemy(screen, enemySprite, map, player, game)
+Valcom::Valcom(Surface* screen, Sprite* enemySprite, Map* map, Player* player1, Player* player2, Game* game)
+	: Enemy(screen, enemySprite, map, player1, player2, game)
 {
 }
 
-void Valcom::checkBrickCollision()
+void Valcom::CheckBrickCollision()
 {
 	BrickCollision = false;
 	for (int i = game->currentLevel * brickCount; i < brickCount * game->currentLevel + brickCount; i++)
 	{
 		//check coll for each dir
-		if (brick[i] && brick[i]->checkCollision(tx - cameraX, ty, SPRITE_SIZE))
+		if (brick[i] && brick[i]->checkCollision(0, tx - cameraX2, ty, SPRITE_SIZE))
 		{
 			BrickCollision = true;
 		}
 	}
 }
 
-bool Valcom::checkCorners(int x1, int y1, int x2, int y2)
+bool Valcom::CheckCorners(int const x1, int const y1, int const x2, int const y2) const
 {
-	return map->CheckCollision(x1, y1) && map->CheckCollision(x2, y2);
+	return map->CheckCollision(0, x1, y1) && map->CheckCollision(0, x2, y2);
 }
 
 void Valcom::BackToTile()
 {
 	int px = static_cast<int>(tx);
-	cout << px << endl;
+	//cout << px << endl;
 
 	if (px % TILE_SIZE >= 32)
 	{
-		px = (px / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
+		px = px / TILE_SIZE * TILE_SIZE + TILE_SIZE;
 
 	}
 	else
 	{
-		px = (px / TILE_SIZE) * TILE_SIZE;
+		px = px / TILE_SIZE * TILE_SIZE;
 
 	}
 	tx = static_cast<float>(px);
 
+
 	int py = static_cast<int>(ty);
-	cout << py << endl;
+	//cout << py << endl;
 
 	if (py % TILE_SIZE >= 32)
 	{
@@ -62,9 +63,9 @@ void Valcom::BackToTile()
 	ty = static_cast<float>(py);
 }
 
-void Valcom::move(float deltaTime)
+void Valcom::Move(float const deltaTime)
 {
-	deltaTime /= 1000.0f;
+	cameraX2 = map->getCamera(0);
 	vX = 250.0f * deltaTime;
 	vY = 250.0f * deltaTime;
 	tx = x;
@@ -80,58 +81,60 @@ void Valcom::move(float deltaTime)
 		}
 	}
 
-	int left = static_cast<int>(tx - cameraX);
+	int left = static_cast<int>(tx - cameraX2);
 	int right = left + SPRITE_SIZE - 1;
 	int top = static_cast<int>(ty);
 	int bottom = top + SPRITE_SIZE - 1;
 
-	checkBrickCollision();
+	CheckBrickCollision();
 
 	switch (currDirection)
 	{
 	case Direction::UP:
-		if (!checkCorners(left, top, right, top) && !BrickCollision)
+		if (!CheckCorners(left, top, right, top) && !BrickCollision)
 		{
 			ty -= vY;
 		}
-		else if (checkCorners(left, top, right, top) || BrickCollision)
+		else if (CheckCorners(left, top, right, top) || BrickCollision)
 		{
 			BackToTile();
 			vY = -vY;
 		}
 		break;
 	case Direction::DOWN:
-		if(!checkCorners(left, bottom, right, bottom) && !BrickCollision)
+		if(!CheckCorners(left, bottom, right, bottom) && !BrickCollision)
 		{
 			ty += vY;
 		}
-		else if (checkCorners(left, bottom, right, bottom) || BrickCollision)
+		else if (CheckCorners(left, bottom, right, bottom) || BrickCollision)
 		{
 			BackToTile();
 			vY = -vY;
 		}
 		break;
 	case Direction::LEFT:
-		if (!checkCorners(left, top, left, bottom) && !BrickCollision)
+		if (!CheckCorners(left, top, left, bottom) && !BrickCollision)
 		{
 			tx -= vX;
 		}
-		else if (checkCorners(left, top, left, bottom) || BrickCollision)
+		else if (CheckCorners(left, top, left, bottom) || BrickCollision)
 		{
 			BackToTile();
 			vX = -vX;
 		}
 		break;
 	case Direction::RIGHT:
-		if (!checkCorners(right, top, right, bottom) && !BrickCollision)
+		if (!CheckCorners(right, top, right, bottom) && !BrickCollision)
 		{
 			tx += vX;
 		}
-		else if (checkCorners(right, top, right, bottom) || BrickCollision)
+		else if (CheckCorners(right, top, right, bottom) || BrickCollision)
 		{
 			BackToTile();
 			vX = -vX;
 		}
+		break;
+	case Direction::NONE:
 		break;
 	}
 
