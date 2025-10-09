@@ -38,8 +38,8 @@ public:
 
 	int2 getPos() const;
 	bool Get_E() const;
-	float getX() const { return tx; }
-	float getY() const { return ty; }
+	float getX() const { return x; }
+	float getY() const { return y; }
 
 	static constexpr int SPRITE_SIZE = 64;
 

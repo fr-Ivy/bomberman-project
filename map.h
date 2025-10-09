@@ -11,6 +11,8 @@ public:
     bool CheckCollision(int camera, int tx, int ty) const;
     bool checkPixelCollision(const bool* playerPixelVisible, int tx, int ty, int SPRITE_SIZE) const;
     void camera(int camera, int x);
+    int Min(int number1, int number2);
+    int Max(int number1, int number2);
 
     int GetWidth() { return MAP_WIDTH; }
 

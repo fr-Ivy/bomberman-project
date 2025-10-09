@@ -5,8 +5,8 @@
 #include "game.h"
 #include <iostream>
 
-Bomb::Bomb(Surface* screen, Player* player, Map* map) 
-	: player(player), map(map)
+Bomb::Bomb(Surface* screen, Player* player, Player* otherPlayer, Map* map) 
+	: player(player), map(map), otherPlayer(otherPlayer)
 {
 	this->screen = screen;
 
@@ -23,25 +23,27 @@ Bomb::~Bomb()
 
 void Bomb::Draw(Surface* surface, int camera, float const deltaTime)
 {
-	e_pressed = player->Get_E();
+	ePressed = player->Get_E();
 	cameraX1 = map->getCamera(camera);
 	cameraX2 = map->getCamera(0);
-	currentPlayerPos = player->getPos();
+	currentPlayerPos1 = player->getPos();
+	currentPlayerPos2 = otherPlayer->getPos();
 
 	//if (glfwGetKey(glfwGetCurrentContext(), GLFW_KEY_E) == GLFW_PRESS)
 	//{
 	//	e_pressed = true;
 	//}
 
-	if (e_pressed && !startCountdown)
+	if (ePressed && !startCountdown)
 	{
 		startCountdown = true;
 		bombCountdown = 3.0f;
-		explosionCountdown = 10.0f;
-		playerPos = player->getPos();
-		cameraX2 = playerPos.x;
-		playerPos.x = (playerPos.x + cameraX2) / 64 * 64 - startPosX;
-		playerPos.y = playerPos.y / 64 * 64;
+		explosionCountdown = 1.0f;
+		playerPos1 = player->getPos();
+		playerPos2 = otherPlayer->getPos();
+		cameraX2 = 64;
+		playerPos1.x = (playerPos1.x + cameraX2) / 64 * 64 - startPosX;
+		playerPos1.y = playerPos1.y / 64 * 64;
 	}
 
 	if (bombSprite && startCountdown)
@@ -50,7 +52,7 @@ void Bomb::Draw(Surface* surface, int camera, float const deltaTime)
 		{
 			bombCountdown -= deltaTime;
 
-			bombSprite->Draw(surface, playerPos.x - cameraX1, playerPos.y);
+			bombSprite->Draw(surface, playerPos1.x - cameraX1, playerPos1.y);
 			//cout << "cameraX: " << cameraX << endl;
 			bombSprite->SetFrame(frame);
 
@@ -85,7 +87,7 @@ void Bomb::Draw(Surface* surface, int camera, float const deltaTime)
 
 			explosionSprite->SetFrame(currentFrame);
 			//getExplosionMask(currentFrame, playerPos.x, playerPos.y);
-			explosionSprite->Draw(surface, playerPos.x - cameraX1, playerPos.y);
+			explosionSprite->Draw(surface, playerPos1.x - cameraX1, playerPos1.y);
 
 
 			//resetBrickFrame = false;
@@ -100,8 +102,8 @@ void Bomb::Draw(Surface* surface, int camera, float const deltaTime)
 				{
 					int positionX = position * directions[j].x;
 					int positionY = position * directions[j].y;
-					int explosionX = positionX + playerPos.x;
-					int	explosionY = positionY + playerPos.y;
+					int explosionX = positionX + playerPos1.x;
+					int	explosionY = positionY + playerPos1.y;
 					bool collision = false;
 					for (int b = game->currentLevel * brickCount; b < brickCount * game->currentLevel + brickCount; b++)
 					{
@@ -149,16 +151,27 @@ void Bomb::Draw(Surface* surface, int camera, float const deltaTime)
 
 					//getExplosionMask(currentFrame, playerPos.x, playerPos.y);
 
-					explosionSprite->Draw(surface, playerPos.x + positionX - cameraX1, playerPos.y + positionY);
+					explosionSprite->Draw(surface, playerPos1.x + positionX - cameraX1, playerPos1.y + positionY);
 
-					if (Collision(explosionX - cameraX2, explosionY, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE) ||
-						Collision(playerPos.x - cameraX2, playerPos.y, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE))
+					if (Collision(explosionX - cameraX2, explosionY, currentPlayerPos1.x, currentPlayerPos1.y, PLAYER_SPRITE) ||
+						Collision(playerPos1.x - cameraX2, playerPos1.y, currentPlayerPos1.x, currentPlayerPos1.y, PLAYER_SPRITE))
 					{
 						//cout << "player hit explosion" << endl;
-						if (PlayerExplosionCollision(explosionX - cameraX2, explosionY, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE) ||
-							PlayerExplosionCollision(playerPos.x - cameraX2, playerPos.y, currentPlayerPos.x, currentPlayerPos.y, PLAYER_SPRITE))
+						if (PlayerExplosionCollision(explosionX - cameraX2, explosionY, currentPlayerPos1.x, currentPlayerPos1.y, PLAYER_SPRITE) ||
+							PlayerExplosionCollision(playerPos1.x - cameraX2, playerPos1.y, currentPlayerPos1.x, currentPlayerPos1.y, PLAYER_SPRITE))
 						{
-							//cout << "nothing" << endl;
+							//reset currentplayer pos
+						}
+					}
+
+					if (Collision(explosionX - cameraX2, explosionY, currentPlayerPos2.x, currentPlayerPos2.y, PLAYER_SPRITE) ||
+						Collision(playerPos1.x - cameraX2, playerPos1.y, currentPlayerPos2.x, currentPlayerPos2.y, PLAYER_SPRITE))
+					{
+						//cout << "player hit explosion" << endl;
+						if (PlayerExplosionCollision(explosionX - cameraX2, explosionY, currentPlayerPos2.x, currentPlayerPos2.y, PLAYER_SPRITE) ||
+							PlayerExplosionCollision(playerPos1.x - cameraX2, playerPos1.y, currentPlayerPos2.x, currentPlayerPos2.y, PLAYER_SPRITE))
+						{
+							//reset otherplayer pos
 						}
 					}
 
@@ -237,21 +250,12 @@ bool Bomb::PlayerExplosionCollision(int const explosionX, int const explosionY, 
 	{
 		for (int x = 0; x < columns; x++)
 		{
-			if (game->player[0]->pixelVisible[(playerLeft + x) + (playerTop + y) * otherSPRITE_SIZE] &&
+			if (player->pixelVisible[(playerLeft + x) + (playerTop + y) * otherSPRITE_SIZE] &&
 				explosionPixelVisible[(explosionLeft + x) + (explosionTop + y) * SPRITE_SIZE])
 			{
 				//cout << "hit" << endl;
 				game->screen1->Plot(left + x, top + y, 0x002880);
-				//game->screen2->Plot(left + x, top + y, 0x002880);
-				hit = true;
-			}
-
-			if (game->player[1]->pixelVisible[(playerLeft + x) + (playerTop + y) * otherSPRITE_SIZE] &&
-				explosionPixelVisible[(explosionLeft + x) + (explosionTop + y) * SPRITE_SIZE])
-			{
-				//cout << "hit" << endl;
 				game->screen2->Plot(left + x, top + y, 0x002880);
-				//game->screen2->Plot(left + x, top + y, 0x002880);
 				hit = true;
 			}
 		}

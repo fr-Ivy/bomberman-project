@@ -65,10 +65,10 @@ void Map::RenderMap(Surface* screen, int const camera)
 			int tileY = TILE_SIZE * y; //start point at 0
 			if (tileX + TILE_SIZE >= 0 && tileY + TILE_SIZE >= 0 && tileX <= screenWidth && tileY <= screenHeight) //is the tile currently in-screen
 			{
-				const int minOffScreenX = max(0, tileX); //look for the highest number between these
-				const int minOffScreenY = max(0, tileY);
-				const int maxOffScreenX = min(screenWidth, tileX + TILE_SIZE); //look for the lowest number between these
-				const int maxOffScreenY = min(screenHeight, tileY + TILE_SIZE);
+				const int minOffScreenX = Max(0, tileX); //look for the highest number between these
+				const int minOffScreenY = Max(0, tileY);
+				const int maxOffScreenX = Min(screenWidth, tileX + TILE_SIZE); //look for the lowest number between these
+				const int maxOffScreenY = Min(screenHeight, tileY + TILE_SIZE);
 
 				const uint2 minOffScreen = { abs(minOffScreenX - tileX), abs(minOffScreenY - tileY) }; //make the minOffScreen positive
 				const uint2 maxOffScreen = { abs(maxOffScreenX - tileX - TILE_SIZE), abs(maxOffScreenY - tileY - TILE_SIZE) }; //make the maxOffScreen positive
@@ -103,12 +103,18 @@ void Map::RenderMap(Surface* screen, int const camera)
 
 void Map::camera(int const camera, int const x)
 {
-	cameraX[camera] = x - TILE_SIZE;
+	cout << x << endl;
+	int center = SCRWIDTH / 4;
+	int maxCameraX = MAP_COLUMNS * TILE_SIZE - SCRWIDTH / 2;
+
+	cameraX[camera] = Max(0, Min(x - center, maxCameraX));
+
+	cout << cameraX[0] << endl;
 }
 
 bool Map::CheckCollision(int const camera, int const tx, int const ty) const
 {
-	int x = (tx + cameraX[camera]) / TILE_SIZE;
+	int x = (tx) / TILE_SIZE;
 	int y = ty / TILE_SIZE;
 
 	if (x < 0 || x >= MAP_COLUMNS || y < 0 || y >= MAP_ROWS)
@@ -184,4 +190,15 @@ bool Map::checkPixelCollision(const bool* playerPixelVisible, int const tx, int 
 		}
 	}
 	return false;
+}
+
+
+int Map::Min(int number1, int number2)
+{
+	return (number1 < number2) ? number1 : number2;
+}
+
+int Map::Max(int number1, int number2)
+{
+	return (number1 > number2) ? number1 : number2;
 }

@@ -49,7 +49,7 @@ void Brick::choosePos()
 
 bool Brick::checkCollision(int player, int tx, int ty, int SPRITE_SIZE)
 {
-	cameraX = map->getCamera(player);
+	cameraX = 0;
 	return (x - cameraX < tx + SPRITE_SIZE && y < ty + SPRITE_SIZE &&
 		x - cameraX + BRICK_SIZE > tx && y + BRICK_SIZE > ty);
 }

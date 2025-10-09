@@ -23,10 +23,10 @@ void Game::Init()
 
 	map = new Map(); //On the heap memory
 	player[0] = new Player(screen1, 64, 64, 0);
-	player[1] = new Player(screen2, 64, 64, 1);
+	player[1] = new Player(screen2, 500, 64, 1);
 
-	bomb[0] = new Bomb(screen1, player[0], map);
-	bomb[1] = new Bomb(screen2, player[1], map);
+	bomb[0] = new Bomb(screen1, player[0], player[1], map);
+	bomb[1] = new Bomb(screen2, player[1], player[0], map);
 	door = new Door(doorSprite, screen1);
 	valcom1 = new Valcom(screen1, enemySprite1, map, player[0], player[1], this);
 
@@ -116,10 +116,10 @@ void Game::Tick( float deltaTime )
 
 	//map.CheckCollision();
 	door->Draw();
-	player[0]->Draw(screen1, 0, 1, 0);
-	player[0]->Draw(screen2, map->getCamera(1), 2, 32);
-	player[1]->Draw(screen1, map->getCamera(0), 2, 32);
-	player[1]->Draw(screen2, 0, 1, 0);
+	player[0]->Draw(screen1, map->getCamera(0), 1, 0);
+	player[0]->Draw(screen2, map->getCamera(1), 1, 0);
+	player[1]->Draw(screen1, map->getCamera(0), 1, 0);
+	player[1]->Draw(screen2, map->getCamera(1), 1, 0);
 
 	bomb[0]->Draw(screen1, 0, deltaTime);
 	bomb[0]->Draw(screen2, 1, deltaTime);

@@ -42,7 +42,7 @@ public:
 	Enemy* valcom1 = nullptr;
 
 
-	static constexpr int amountBricks = 80; //80
+	static constexpr int amountBricks = 20; //80
 	static constexpr int levels = 2;
 	int currentLevel = 0;
 	Brick* bricks[amountBricks * levels];

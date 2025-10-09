@@ -10,11 +10,12 @@ class Brick;
 class Bomb
 {
 public:
-	Bomb(Surface* screen, Player* player, Map* map);
+	Bomb(Surface* screen, Player* player, Player* otherPlayer, Map* map);
 	~Bomb();
 	//getters and setters should be class defined. I cannot get someone else's organs for example
 	void Draw(Surface* surface, int camera, float const deltaTime);
 	bool Collision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE);
+	bool PlayerCollision(int explosionX, int explosionY, int otherSPRITE_SIZE);
 	void GetExplosionMask(int frameNumber);
 	bool PlayerExplosionCollision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE) const;
 
@@ -31,8 +32,10 @@ private:
 	Sprite* bombSprite = nullptr;
 	Sprite* explosionSprite = nullptr;
 
-	int2 playerPos = { 0,0 };
-	int2 currentPlayerPos = { 0,0 };
+	int2 playerPos1 = { 0,0 };
+	int2 playerPos2 = { 0,0 };
+	int2 currentPlayerPos1 = { 0,0 };
+	int2 currentPlayerPos2 = { 0,0 };
 	int cameraX1 = 0.0f;
 	int cameraX2 = 0.0f;
 	float startPosX = 64.0f;
@@ -42,7 +45,7 @@ private:
 	int x = 0;
 	int y = 0;
 
-	bool e_pressed = false;
+	bool ePressed = false;
 	bool startCountdown = false;
 	bool exploded = false;
 	bool playerCollision = false;
@@ -69,6 +72,7 @@ private:
 	bool explosionPixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
 
 	Player* player = nullptr;
+	Player* otherPlayer = nullptr;
 	Map* map = nullptr;
 	Brick** brick = nullptr;
 	Game* game = nullptr;

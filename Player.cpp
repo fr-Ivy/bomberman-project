@@ -118,7 +118,7 @@ void Player::KeyDownARROWS(int const key)
 
 void Player::move(float const deltaTime)
 {
-	float speed = 100.0f;
+	float speed = 100.0f * deltaTime;
 	s_frame -= deltaTime;
 
 	tx = x;
@@ -126,7 +126,7 @@ void Player::move(float const deltaTime)
 
 	if (UP)
 	{
-		ty -= speed * deltaTime * 2;
+		ty -= speed * 2;
 		//y -= speed * deltaTime;
 
 
@@ -138,7 +138,7 @@ void Player::move(float const deltaTime)
 	}
 	if (LEFT)
 	{
-		tx -= speed * deltaTime;
+		tx -= speed;
 		//x -= speed * deltaTime;
 
 
@@ -150,7 +150,7 @@ void Player::move(float const deltaTime)
 	}
 	if (DOWN)
 	{
-		ty += speed * deltaTime * 2;
+		ty += speed * 2;
 		//y += speed * deltaTime;
 
 
@@ -162,7 +162,7 @@ void Player::move(float const deltaTime)
 	}
 	if (RIGHT)
 	{
-		tx += speed * deltaTime;
+		tx += speed;
 		//x += speed * deltaTime;
 
 
@@ -175,7 +175,7 @@ void Player::move(float const deltaTime)
 
 	bool brickCollision = false;
 	for (int i = game->currentLevel * brickCount; i < brickCount * game->currentLevel + brickCount; i++) 
-	{		
+	{
 		if (brick[i] && brick[i]->checkCollision(camera, tx, ty, SPRITE_SIZE)) 
 		{
 			brickCollision = true;
@@ -190,7 +190,7 @@ void Player::move(float const deltaTime)
 			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
-				x = tx;
+			x = tx;
 		}
 	}
 	else if (tx < x)
@@ -200,7 +200,7 @@ void Player::move(float const deltaTime)
 			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
-				x = tx;
+			x = tx;
 		}
 	}
 
@@ -211,7 +211,7 @@ void Player::move(float const deltaTime)
 			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
-				y = ty;
+			y = ty;
 		}
 	}
 	else if (ty < y)
@@ -221,7 +221,7 @@ void Player::move(float const deltaTime)
 			!brickCollision)
 		{
 			//if (!map->checkPixelCollision(pixelVisible, tx, ty, SPRITE_SIZE))
-				y = ty;
+			y = ty;
 		}
 	}
 	//bomb->getPosition(x, y);
@@ -252,7 +252,7 @@ void Player::GoToNextLevel(float const deltaTime)
 	}
 }
 
-void Player::Draw(Surface* surface, int camera, int px, int TILE_SIZE)
+void Player::Draw(Surface* surface, int const camera, int px, int TILE_SIZE)
 {
 	if (playerSprite)
 	{
@@ -260,11 +260,6 @@ void Player::Draw(Surface* surface, int camera, int px, int TILE_SIZE)
 		playerSprite->SetFrame(frame);
 		Pixel(frame);
 	}
-}
-
-int Player::Camera()
-{
-	return x - map->TILE_SIZE;
 }
 
 
