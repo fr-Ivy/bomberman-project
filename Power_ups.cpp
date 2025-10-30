@@ -37,7 +37,7 @@ void Power_ups::Draw(Surface* surface, int camera)
 
 bool Power_ups::Collision1()
 {
-	if (player1->checkAABBCollision(x + 2, y + 2, SPRITE_SIZE - 4))
+	if (player1->CheckAABBCollision(x + 2, y + 2, SPRITE_SIZE - 4))
 	{
 		cout << "hit" << endl;
 		return true;
@@ -47,7 +47,7 @@ bool Power_ups::Collision1()
 
 bool Power_ups::Collision2()
 {
-	if (player2->checkAABBCollision(x + 2, y + 2, SPRITE_SIZE - 4))
+	if (player2->CheckAABBCollision(x + 2, y + 2, SPRITE_SIZE - 4))
 	{
 		cout << "hit" << endl;
 		return true;

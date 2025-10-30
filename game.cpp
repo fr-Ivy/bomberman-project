@@ -120,9 +120,9 @@ void Game::Init()
 	}
 
 	menuScreen = new Surface("assets/UI/menu.png");
-	gameOverScreen = new Surface("assets/UI/gameOver2.png");
+	gameOverScreen = new Surface("assets/UI/gameOver.png");
 	gameModeScreen = new Surface("assets/UI/choose_gamemode.png");
-	controlsScreen = new Surface("assets/UI/controls2.png");
+	controlsScreen = new Surface("assets/UI/controls.png");
 	menuArrow = new Sprite(new Surface("assets/UI/Arrow.png"), 1);
 
 	menuUI = new UI(menuScreen, 250, 0);

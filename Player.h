@@ -25,11 +25,10 @@ public:
 	bool GoToNextLevel();
 
 	void Draw(Surface* surface, float theCamera);
-	bool checkAABBCollision(float otherX, float otherY, int otherSPRITE_SIZE);
+	bool CheckAABBCollision(float otherX, float otherY, int otherSPRITE_SIZE) const;
 	void Pixel(int frameNumber);
 	bool PlayerPixelCollision(Enemy* enemy, int px, int py, int otherSPRITE_SIZE) const;
 	void DyingAnimation(float deltaTime);
-	void checkEnemyCollision(int start1, int end1, int start2, int end2);
 	void ResetPosition();
 	void SetMapPtr(Map* _map) { map = _map; }
 	void SetBombPtr(Bomb* _bomb) { bomb = _bomb; }

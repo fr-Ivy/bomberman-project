@@ -145,7 +145,7 @@ void Bomb::Draw(Surface* surface, int const camera, float const deltaTime)
 							{
 								//play animation before deleting the brick (animation should be in the brick class) 
 								//foundBrick = true;
-								brick[b]->startAnimation = true;
+								//brick[b]->startAnimation = true;
 
 								/*if (brick[b]->animationEnded)
 								{
@@ -156,7 +156,7 @@ void Bomb::Draw(Surface* surface, int const camera, float const deltaTime)
 								collision = true;
 							}
 
-							if ((brick[b] && Collision(explosionX, explosionY, brick[b]->getX(), brick[b]->getY(), BRICK_SIZE)) ||
+							if (/*(brick[b] && Collision(explosionX, explosionY, brick[b]->getX(), brick[b]->getY(), BRICK_SIZE)) ||*/
 								map->CheckCollision(explosionX, explosionY))
 							{
 								collision = true;

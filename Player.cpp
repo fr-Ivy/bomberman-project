@@ -254,7 +254,7 @@ void Player::Move(float const deltaTime)
 	{
 		if (valcom[i])
 		{
-			if (checkAABBCollision(valcom[i]->x, valcom[i]->y, valcom[i]->SPRITE_SIZE))
+			if (CheckAABBCollision(valcom[i]->x, valcom[i]->y, valcom[i]->SPRITE_SIZE))
 			{
 				Pixel(frame);
 				cout << "AABB" << endl;
@@ -276,7 +276,7 @@ void Player::Move(float const deltaTime)
 	{
 		if (oneal[i])
 		{
-			if (checkAABBCollision(oneal[i]->x, oneal[i]->y, oneal[i]->SPRITE_SIZE))
+			if (CheckAABBCollision(oneal[i]->x, oneal[i]->y, oneal[i]->SPRITE_SIZE))
 			{
 				Pixel(frame);
 				cout << "AABB" << endl;
@@ -348,11 +348,13 @@ void Player::Draw(Surface* surface, float const theCamera)
 	}
 }
 
-bool Player::checkAABBCollision(float const otherX, float const otherY, int const otherSPRITE_SIZE)
+bool Player::CheckAABBCollision(float const otherX, float const otherY, int const otherSPRITE_SIZE) const
 {
 #ifdef _DEBUG
-	screen->Box(static_cast<int>(otherX), static_cast<int>(otherY), static_cast<int>(otherX) + otherSPRITE_SIZE, static_cast<int>(otherY) + otherSPRITE_SIZE, 0xff00ff);
-	screen->Box(static_cast<int>(tx), static_cast<int>(ty), static_cast<int>(tx) + SPRITE_SIZE, static_cast<int>(ty) + SPRITE_SIZE, 0xff00ff);
+	screen->Box(static_cast<int>(otherX), static_cast<int>(otherY), 
+		static_cast<int>(otherX) + otherSPRITE_SIZE, static_cast<int>(otherY) + otherSPRITE_SIZE, 0xfc0303);
+	screen->Box(static_cast<int>(tx), static_cast<int>(ty), 
+		static_cast<int>(tx) + SPRITE_SIZE, static_cast<int>(ty) + SPRITE_SIZE, 0xfc0303);
 #endif
 	return (otherX < tx + SPRITE_SIZE && otherY < ty + SPRITE_SIZE &&
 		otherX + static_cast<float>(otherSPRITE_SIZE) > tx && otherY + static_cast<float>(otherSPRITE_SIZE) > ty);
