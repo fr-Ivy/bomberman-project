@@ -27,14 +27,14 @@ void Door::ChoosePosition()
 
 bool Door::collision(int const tx, int const ty, int const otherSPRITE_SIZE)
 {
-	cameraX = map->getCamera(0);
 	//cout << x << ", " << y << endl;
 	//cout << tx << ", " << ty << endl;
-	return (x - cameraX < tx + otherSPRITE_SIZE && y < ty + otherSPRITE_SIZE &&
-		x - cameraX + SPRITE_SIZE > tx && y + SPRITE_SIZE > ty);
+	return (x < tx + otherSPRITE_SIZE && y < ty + otherSPRITE_SIZE &&
+		x + SPRITE_SIZE > tx && y + SPRITE_SIZE > ty);
 }
 
-void Door::Draw()
+void Door::Draw(Surface* surface, int camera)
 {
-	doorSprite->Draw(screen, x - cameraX, y);
+	cameraX = static_cast<int>(map->getCamera(camera));
+	doorSprite->Draw(surface, x - cameraX, y);
 }

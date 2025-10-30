@@ -1,9 +1,11 @@
 #include "precomp.h"
 #include "Map.h"
+#include "game.h"
+#include "player.h"
 #include <iostream>
 
 
-Map::Map()
+Map::Map(Game* game) : game(game)
 {
 	tileSheet = new Surface("assets/tiled/TileSet.png");
 
@@ -89,9 +91,9 @@ void Map::RenderMap(Surface* screen, int const camera)
 				const uint width = TILE_SIZE - minOffScreen.x - maxOffScreen.x;
 				const uint height = TILE_SIZE - minOffScreen.y - maxOffScreen.y;
 
-				for (int i = 0; i < height; i++, src += MAP_WIDTH, dst += screenWidth)
+				for (uint i = 0; i < height; i++, src += MAP_WIDTH, dst += screenWidth)
 				{
-					for (int j = 0; j < width; j++)
+					for (uint j = 0; j < width; j++)
 					{
 						dst[j] = src[j];
 					}
@@ -101,20 +103,29 @@ void Map::RenderMap(Surface* screen, int const camera)
 	}
 }
 
-void Map::camera(int const camera, int const x)
+void Map::camera1Player(int x)
 {
-	cout << x << endl;
+	//cout << x << endl;
+	int center = SCRWIDTH / 2;
+	int maxCameraX = MAP_COLUMNS * TILE_SIZE - SCRWIDTH;
+
+	cameraX[2] = Max(0, Min(x - center, maxCameraX));
+}
+
+void Map::camera2Player(int const camera, int const x)
+{
+	//cout << x << endl;
 	int center = SCRWIDTH / 4;
 	int maxCameraX = MAP_COLUMNS * TILE_SIZE - SCRWIDTH / 2;
 
 	cameraX[camera] = Max(0, Min(x - center, maxCameraX));
 
-	cout << cameraX[0] << endl;
+	//cout << cameraX[0] << endl;
 }
 
-bool Map::CheckCollision(int const camera, int const tx, int const ty) const
+bool Map::CheckCollision(int const tx, int const ty) const
 {
-	int x = (tx) / TILE_SIZE;
+	int x = tx / TILE_SIZE;
 	int y = ty / TILE_SIZE;
 
 	if (x < 0 || x >= MAP_COLUMNS || y < 0 || y >= MAP_ROWS)
@@ -125,71 +136,84 @@ bool Map::CheckCollision(int const camera, int const tx, int const ty) const
 	return ID == 46;
 }
 
-bool Map::checkPixelCollision(const bool* playerPixelVisible, int const tx, int const ty, int const SPRITE_SIZE) const
+
+
+bool Map::checkPixelCollision(Player* player, int const tx, int const ty, int const SPRITE_SIZE) const
 {
+	game->screen1->Plot(10, 10, 0xff00ff); // felroze testpixel
+	//std::cout << "checkPixelCollision called at tx=" << tx << ", ty=" << ty << std::endl;
+	int x = tx / TILE_SIZE;
+	int y = ty / TILE_SIZE;
+
+	const int ID = tiles[y][x];
+	//std::cout << "Tile ID: " << ID << std::endl;
+
 	bool tilePixelVisible[TILE_SIZE * TILE_SIZE];
 	for (int i = 0; i < TILE_SIZE * TILE_SIZE; i++) 
 	{
 		tilePixelVisible[i] = true;
 	}
 
-	int x = tx / TILE_SIZE;
-	int y = ty / TILE_SIZE;
 
-	const int ID = tiles[y][x];
+	int playerLeft = tx;
+	int const playerRight = tx + SPRITE_SIZE;
+	int playerTop = ty;
+	int const playerBottom = ty + SPRITE_SIZE;
 
-	int playerLeft, playerRight, playerTop, playerBottom;
-	int tileLeft, tileRight, tileTop, tileBottom;
-	int left, right, top, bottom;
-	int columns, rows;
-
-	playerLeft = tx;
-	playerRight = tx + SPRITE_SIZE - 1;
-	playerTop = ty;
-	playerBottom = ty + SPRITE_SIZE - 1;
-
-	tileLeft = x * TILE_SIZE;
-	tileRight = x * TILE_SIZE + TILE_SIZE - 1;
-	tileTop = y * TILE_SIZE;
-	tileBottom = y * TILE_SIZE + TILE_SIZE - 1;
+	int tileLeft = x * TILE_SIZE;
+	int const tileRight = x * TILE_SIZE + TILE_SIZE;
+	int tileTop = y * TILE_SIZE;
+	int const tileBottom = y * TILE_SIZE + TILE_SIZE;
 
 
-	left = max(playerLeft, tileLeft);
-	right = min(playerRight, tileRight);
-	top = max(playerTop, tileTop);
-	bottom = min(playerBottom, tileBottom);
-	columns = right - left + 1;
-	rows = bottom - top + 1;
+	int const left = max(playerLeft, tileLeft);
+	int const right = min(playerRight, tileRight);
+	int const top = max(playerTop, tileTop);
+	int const bottom = min(playerBottom, tileBottom);
+	int const columns = right - left;
+	int const rows = bottom - top;
+
+	//std::cout << "columns=" << columns << ", rows=" << rows << std::endl;
 
 	playerLeft = left - playerLeft;
 	playerTop = top - playerTop;
-
 	tileLeft = left - tileLeft;
 	tileTop = top - tileTop;
 
-	cout << "tx, ty: " << tx << ", " << ty << endl;
-	cout << "tile x, y: " << x << ", " << y << endl;
-	cout << "player offsets: " << playerLeft << ", " << playerTop << endl;
-	cout << "columns, rows: " << columns << ", " << rows << endl;
-	cout << "ID: " << ID << endl;
+	//cout << "tx, ty: " << tx << ", " << ty << endl;
+	//cout << "tile x, y: " << x << ", " << y << endl;
+	//cout << "player offsets: " << playerLeft << ", " << playerTop << endl;
+	//cout << "columns, rows: " << columns << ", " << rows << endl;
+	//cout << "ID: " << ID << endl;
 
-
+	bool hit = false;
 	//cout << ID << endl;
 	if (ID == 46)
 	{
+		int tileScreenX = x * TILE_SIZE;
+		int tileScreenY = y * TILE_SIZE;
+
+		for (int i = 0; i < TILE_SIZE; i++)
+		{
+			for (int j = 0; j < TILE_SIZE; j++)
+			{
+				game->screen1->Plot(tileScreenX + j, tileScreenY + i, 0xff0000);
+			}
+		}
+
 		for (int i = 0; i < rows; i++)
 		{
 			for (int j = 0; j < columns; j++)
 			{
-				if (playerPixelVisible[(playerLeft + j) + (playerTop + i) * SPRITE_SIZE] &&
+				if (player->pixelVisible[(playerLeft + j) + (playerTop + i) * SPRITE_SIZE] &&
 					tilePixelVisible[(tileLeft + j) + (tileTop + i) * TILE_SIZE])
 				{
-					return true;
+					hit = true;
 				}
 			}
 		}
 	}
-	return false;
+	return hit;
 }
 
 

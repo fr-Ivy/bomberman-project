@@ -6,6 +6,8 @@ class Bomb;
 class Brick;
 class Door;
 class Map;
+class Enemy;
+class Audio;
 
 class Player
 {
@@ -18,18 +20,23 @@ public:
 	void KeyUpWASD(int key);
 	void KeyDownARROWS(int key);
 	void KeyUpARROWS(int key);
-	void move(float deltaTime);
+	void Move(float deltaTime);
 
-	int Camera();
+	bool GoToNextLevel();
 
-	void GoToNextLevel(float deltaTime);
-
-	void Draw(Surface* surface, int camera, int px, int TILE_SIZE);
+	void Draw(Surface* surface, float theCamera);
+	bool checkAABBCollision(float otherX, float otherY, int otherSPRITE_SIZE);
 	void Pixel(int frameNumber);
+	bool PlayerPixelCollision(Enemy* enemy, int px, int py, int otherSPRITE_SIZE) const;
+	void DyingAnimation(float deltaTime);
+	void checkEnemyCollision(int start1, int end1, int start2, int end2);
+	void ResetPosition();
 	void SetMapPtr(Map* _map) { map = _map; }
 	void SetBombPtr(Bomb* _bomb) { bomb = _bomb; }
 	void SetGamePtr(Game* _game) { game = _game; }
 	void SetDoorPtr(Door* _door) { door = _door; }
+	void SetAudioPtr(Audio* _audio) { audio = _audio; }
+	void setEnemyPtr(Enemy** _valcom, Enemy** _oneal) { valcom = _valcom; oneal = _oneal; }
 	void SetBrickPtr(Brick** _brick, int count, int total) {
 		brick = _brick;
 		brickCount = count;
@@ -44,6 +51,11 @@ public:
 	static constexpr int SPRITE_SIZE = 64;
 
 	bool pixelVisible[SPRITE_SIZE * SPRITE_SIZE] = { false };
+	int frame = 4;
+	int dyingFrame = 0;
+	bool startDyingAnimation = false;
+	bool dying = false;
+	bool LEVEL_UP = false;
 
 private:
 	Surface* screen = nullptr;
@@ -54,12 +66,17 @@ private:
 	Brick** brick = nullptr;
 	Game* game = nullptr;
 	Door* door = nullptr;
+	Enemy** valcom = nullptr;
+	Enemy** oneal = nullptr;
+	Audio* audio = nullptr;
 
-	int frame = 4;
-	float x = 64;
-	float y = 64;
-	float tx = 0;
-	float ty = 0;
+	float startPosX = 0.0f;
+	float startPosY = 0.0f;
+
+	float x = 0.0f;
+	float y = 0.0f;
+	float tx = 0.0f;
+	float ty = 0.0f;
 	int camera = 0;
 
 	bool UP = false;
@@ -68,9 +85,11 @@ private:
 	bool RIGHT = false;
 	bool CALLBOMB = false;
 
+
 	float s_frame = 0.2f;
 	float s_frameCooldown = 0.2f;
 	float doorCountdown = 0.0f;
+	float dyingFrameCountdown = 0.0f;
 
 	int brickCount = 0;
 	int brickTotal = 0;

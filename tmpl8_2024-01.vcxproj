@@ -45,6 +45,10 @@
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <TargetName>$(ProjectName)_debug</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Program Files (x86)\Visual Leak Detector\lib\Win64;C:\Program Files (x86)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\Visual Leak Detector\lib\Win64;C:\Program Files (x86)\Visual Leak Detector\include;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib</AdditionalIncludeDirectories>
@@ -121,10 +125,20 @@
   </ItemDefinitionGroup>
   <!-- END Custom section -->
   <ItemGroup>
+    <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="ExtraBomb.cpp" />
+    <ClCompile Include="ExtraFlameRange.cpp" />
+    <ClCompile Include="miniaudio.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="O_Neal.cpp" />
+    <ClCompile Include="Power_ups.cpp" />
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="Valcom.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -146,11 +160,19 @@
     <ClCompile Include="template\tmpl8math.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arrow.h" />
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="cl\tools.cl" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ExtraBomb.h" />
+    <ClInclude Include="ExtraFlameRange.h" />
+    <ClInclude Include="miniaudio.h" />
+    <ClInclude Include="O_Neal.h" />
+    <ClInclude Include="Power_ups.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Valcom.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Map.h" />

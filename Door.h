@@ -19,10 +19,10 @@ public:
 
 	void ChoosePosition();
 	bool collision(int tx, int ty, int otherSPRITE_SIZE);
-	void Draw();
+	void Draw(Surface* surface, int camera);
 private:
 	Sprite* doorSprite = nullptr;
-	Surface* screen = screen;
+	Surface* screen = nullptr;
 	Brick** brick = nullptr;
 	Game* game = nullptr;
 	Map* map = nullptr;

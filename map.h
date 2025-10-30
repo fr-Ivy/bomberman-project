@@ -1,16 +1,16 @@
 #pragma once
-
-class bomb;
+#include "game.h"
 
 class Map
 {
 public:
-    Map();
+    Map(Game* game);
     ~Map();
-    void RenderMap(Surface* screen, int cameraX);
-    bool CheckCollision(int camera, int tx, int ty) const;
-    bool checkPixelCollision(const bool* playerPixelVisible, int tx, int ty, int SPRITE_SIZE) const;
-    void camera(int camera, int x);
+    void RenderMap(Surface* screen, int camera);
+    bool CheckCollision(int tx, int ty) const;
+    bool checkPixelCollision(Player* player, int tx, int ty, int SPRITE_SIZE) const;
+    void camera1Player(int x);
+    void camera2Player(int camera, int x);
     int Min(int number1, int number2);
     int Max(int number1, int number2);
 
@@ -27,6 +27,8 @@ private:
     static constexpr int MAP_COLUMNS = 31;
     static constexpr int MAP_WIDTH = 896;
     int tiles[MAP_ROWS][MAP_COLUMNS];
-    int cameraX[2] = {0,0}; // cameraX[0] for screen1, cameraX[1] for screen2
+    int cameraX[3] = {0, 0, 0}; // cameraX[0] for screen1, cameraX[1] for screen2, cameraX[2] for single-player
+
+    Game* game = nullptr;
 };
 

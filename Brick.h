@@ -6,17 +6,19 @@ class Map;
 class Brick
 {
 public:
-	Brick(Surface* screen1, Surface* screen2, Bomb* bomb, Map* map);
+	Brick(Surface* screen1, Surface* screen2, Map* map);
 	~Brick();
-	bool CheckStartPos(int x, int y) const;
+	bool CheckStartPos(int cx, int cy) const;
 	void choosePos();
-	bool checkCollision(int player, int tx, int ty, int SPRITE_SIZE);
-	void playAnimation(float deltaTime, bool resetFrame);
-	void Draw();
+	bool checkCollision(int tx, int ty, int SPRITE_SIZE);
+	void playAnimation(float deltaTime);
+	void Draw(Surface* surface, int camera);
 
 	int getX() const { return x; }
 	int getY() const { return y; }
 	bool animationEnded = false;
+	bool startAnimation = false;
+	bool deleteObject = false;
 
 private:
 	Surface* screen1 = nullptr;
@@ -42,7 +44,6 @@ private:
 
 	bool collision = false;
 
-	Bomb* bomb = nullptr;
 	Map* map = nullptr;
 };
 
