@@ -17,7 +17,7 @@ public:
 	bool Collision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE);
 	//bool PlayerCollision(int explosionX, int explosionY, int otherSPRITE_SIZE);
 	void GetExplosionMask(int frameNumber);
-	bool PlayerExplosionCollision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE, Player* thePlayer);
+	bool PlayerExplosionPixelCollision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE, Player* thePlayer);
 	bool TheCollisionPlayer(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE, Player* thePlayer);
 	bool TheCollisionEnemy(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE, Enemy* theEnemy);
 	bool EnemyExplosionCollision(int explosionX, int explosionY, int tx, int ty, int otherSPRITE_SIZE, Enemy* theEnemy);

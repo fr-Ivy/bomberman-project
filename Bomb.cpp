@@ -145,7 +145,7 @@ void Bomb::Draw(Surface* surface, int const camera, float const deltaTime)
 							{
 								//play animation before deleting the brick (animation should be in the brick class) 
 								//foundBrick = true;
-								//brick[b]->startAnimation = true;
+								brick[b]->startAnimation = true;
 
 								/*if (brick[b]->animationEnded)
 								{
@@ -288,7 +288,7 @@ void Bomb::GetExplosionMask(int const frameNumber)
 }
 
 
-bool Bomb::PlayerExplosionCollision(int const explosionX, int const explosionY, int const tx, int const ty, int const otherSPRITE_SIZE, Player* thePlayer)
+bool Bomb::PlayerExplosionPixelCollision(int const explosionX, int const explosionY, int const tx, int const ty, int const otherSPRITE_SIZE, Player* thePlayer)
 {
 	int playerLeft = tx;
 	int const playerRight = tx + otherSPRITE_SIZE;
@@ -342,7 +342,7 @@ bool Bomb::TheCollisionPlayer(int explosionX, int explosionY, int tx, int ty, in
 	{
 		thePlayer->Pixel(thePlayer->frame);
 		//cout << "player hit explosion" << endl;
-		if (PlayerExplosionCollision(explosionX, explosionY, tx, ty, otherSPRITE_SIZE, thePlayer))
+		if (PlayerExplosionPixelCollision(explosionX, explosionY, tx, ty, otherSPRITE_SIZE, thePlayer))
 		{
 			return true;
 			//player->ResetPosition();

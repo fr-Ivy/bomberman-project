@@ -21,13 +21,12 @@ public:
 	void KeyDownARROWS(int key);
 	void KeyUpARROWS(int key);
 	void Move(float deltaTime);
-
 	bool GoToNextLevel();
 
 	void Draw(Surface* surface, float theCamera);
 	bool CheckAABBCollision(float otherX, float otherY, int otherSPRITE_SIZE) const;
 	void Pixel(int frameNumber);
-	bool PlayerPixelCollision(Enemy* enemy, int px, int py, int otherSPRITE_SIZE) const;
+	bool PlayerPixelCollision(Enemy* enemy, int px, int py, int otherSPRITE_SIZE);
 	void DyingAnimation(float deltaTime);
 	void ResetPosition();
 	void SetMapPtr(Map* _map) { map = _map; }
@@ -46,6 +45,9 @@ public:
 	bool Get_E() const;
 	float getX() const { return x; }
 	float getY() const { return y; }
+
+	int Min(int number1, int number2) { return (number1 < number2) ? number1 : number2; }
+	int Max(int number1, int number2) { return (number1 > number2) ? number1 : number2; }
 
 	static constexpr int SPRITE_SIZE = 64;
 

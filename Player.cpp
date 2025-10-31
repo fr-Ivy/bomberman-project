@@ -430,7 +430,7 @@ bool Player::Get_E() const
 	return CALLBOMB;
 }
 
-bool Player::PlayerPixelCollision(Enemy* enemy, int const px, int const py, int const otherSPRITE_SIZE) const
+bool Player::PlayerPixelCollision(Enemy* enemy, int const px, int const py, int const otherSPRITE_SIZE)
 {
 	int playerLeft = static_cast<int>(x);
 	int const playerRight = static_cast<int>(x) + otherSPRITE_SIZE;
@@ -442,10 +442,10 @@ bool Player::PlayerPixelCollision(Enemy* enemy, int const px, int const py, int 
 	int enemyTop = py;
 	int const enemyBottom = py + SPRITE_SIZE;
 
-	int const left = max(playerLeft, enemyLeft);
-	int const right = min(playerRight, enemyRight);
-	int const top = max(playerTop, enemyTop);
-	int const bottom = min(playerBottom, enemyBottom);
+	int const left = Max(playerLeft, enemyLeft);
+	int const right = Min(playerRight, enemyRight);
+	int const top = Max(playerTop, enemyTop);
+	int const bottom = Min(playerBottom, enemyBottom);
 	int const columns = right - left;
 	int const rows = bottom - top;
 	//cout << "columns: " << columns << ", rows: " << rows << endl;

@@ -80,59 +80,6 @@ void Arrow::keyDown(int const key)
 			break;
 		}
 
-		/*if (x == startPosX)
-		{
-			if (game->showMenu)
-			{
-				//game->showMenu = false;
-				game->showGameMode = true;
-				//game->showGameOver = true;
-				//game->showGame = true;
-				//game->pressedPlay = true;
-				break;
-			}
-
-			if (game->showGameOver)
-			{
-				game->pressedPlay = true;
-				game->showGameOver = false;
-				game->showGame = false;
-				game->showGameMode = true;
-				break;
-			}
-
-			if (game->showGameMode)
-			{
-				//game->showMenu = false;
-				game->gameMode = 1;
-				game->showGameMode = false;
-				game->showGame = true;
-				break;
-			}
-		}
-
-		if (x == secondStartPosX)
-		{
-			if (game->showMenu)
-			{
-				game->showControls = true;
-				break;
-			}
-
-			if (game->showGameOver)
-			{
-				exit(0);
-			}
-
-			if (game->showGameMode)
-			{
-				game->gameMode = 2;
-				game->showGameMode = false;
-				game->showGame = true;
-				break;
-			}
-		}
-		*/
 	}
 }
 

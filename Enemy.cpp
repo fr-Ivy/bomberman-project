@@ -194,8 +194,10 @@ bool Enemy::BombCollision() const
 	int hit = false;
 	for (int i = 0; i < bomb1->MAX_BOMBS; i++)
 	{
-		if (bomb1->Collision(bomb1->bombs[i].position.x, bomb1->bombs[i].position.y, static_cast<int>(tx), static_cast<int>(ty), SPRITE_SIZE) || 
-			bomb2->Collision(bomb2->bombs[i].position.x, bomb2->bombs[i].position.y, static_cast<int>(tx), static_cast<int>(ty), SPRITE_SIZE))
+		if (bomb1->Collision(bomb1->bombs[i].position.x, bomb1->bombs[i].position.y, 
+			static_cast<int>(tx), static_cast<int>(ty), SPRITE_SIZE) || 
+			bomb2->Collision(bomb2->bombs[i].position.x, bomb2->bombs[i].position.y, 
+				static_cast<int>(tx), static_cast<int>(ty), SPRITE_SIZE))
 		{
 			hit = true;
 		}

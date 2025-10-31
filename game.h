@@ -61,6 +61,7 @@ public:
 
 	int currentLevel = 0;
 	int gameMode = 1; //1 = single-player, 2 = two-player
+	int TILE_SIZE = 64;
 
 	static constexpr int amountBricks = 80; //80
 	static constexpr int levels = 2;
@@ -78,11 +79,7 @@ public:
 	Surface* gameOverScreen = nullptr;
 	Surface* gameModeScreen = nullptr;
 	Surface* controlsScreen = nullptr;
-
 	Sprite* menuArrow = nullptr;
-
-	int TILE_SIZE = 64;
-
 
 	bool showGame = false;
 	bool showMenu = true;

@@ -146,14 +146,14 @@ void O_Neal::Chase(float deltaTime)
 #ifdef _DEBUG
 	screen->Line(player1.getX() - map.getCamera(0), player1.getY(), x - map.getCamera(0), y, 0xffff00);
 #endif
-	float distancePlayer1 = sqrt((player1.getX() - x) * (player1.getX() - x) + (player1.getY() - y) * (player1.getY() - y));
-	float distancePlayer2 = sqrt((player2.getX() - x) * (player2.getX() - x) + (player2.getY() - y) * (player2.getY() - y));
+	float const distancePlayer1 = sqrt((player1.getX() - x) * (player1.getX() - x) + (player1.getY() - y) * (player1.getY() - y));
+	float const distancePlayer2 = sqrt((player2.getX() - x) * (player2.getX() - x) + (player2.getY() - y) * (player2.getY() - y));
 
-	float distanceXPlayer1 = player1.getX() - x;
-	float distanceYPlayer1 = player1.getY() - y;
+	float const distanceXPlayer1 = player1.getX() - x;
+	float const distanceYPlayer1 = player1.getY() - y;
 
-	float distanceXPlayer2 = player2.getX() - x;
-	float distanceYPlayer2 = player2.getY() - y;
+	float const distanceXPlayer2 = player2.getX() - x;
+	float const distanceYPlayer2 = player2.getY() - y;
 	//cout << distanceX << ", " << distanceY << endl;
 	//cout << distancePlayer1 << ", " << distancePlayer2 << endl;
 
